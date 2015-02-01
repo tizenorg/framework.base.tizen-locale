@@ -29,24 +29,19 @@ mkdir -p $RPM_BUILD_ROOT
 mkdir -p %{buildroot}/%{_prefix}/share/license
 install -m 644 %SOURCE99 $RPM_BUILD_ROOT/%{_prefix}/share/license/%{name}
 
-
 mkdir -p %{buildroot}/usr/lib/locale
-#I18NPATH=localedata GCONV_PATH=iconvdata localedef --quiet -c -f UTF-8 -i C %{buildroot}/usr/lib/locale/C.UTF-8
-I18NPATH=localedata GCONV_PATH=iconvdata localedef --quiet -c -f UTF-8 -i tr_TR %{buildroot}/usr/lib/locale/tr_TR.UTF-8
-I18NPATH=localedata GCONV_PATH=iconvdata localedef --quiet -c -f UTF-8 -i et_EE %{buildroot}/usr/lib/locale/et_EE.UTF-8
-I18NPATH=localedata GCONV_PATH=iconvdata localedef --quiet -c -f UTF-8 -i lt_LT %{buildroot}/usr/lib/locale/lt_LT.UTF-8
-I18NPATH=localedata GCONV_PATH=iconvdata localedef --quiet -c -f UTF-8 -i uz_UZ %{buildroot}/usr/lib/locale/uz_UZ.UTF-8
-I18NPATH=localedata GCONV_PATH=iconvdata localedef --quiet -c -f UTF-8 -i hy_AM %{buildroot}/usr/lib/locale/hy_AM.UTF-8
-I18NPATH=localedata GCONV_PATH=iconvdata localedef --quiet -c -f UTF-8 -i vi_VN %{buildroot}/usr/lib/locale/vi_VN.UTF-8
 
-# not supported :  kn_CA ml_MY ms_MW zh_CH
-REGEX="(ar_AE|as_IN|az_AZ|bg_BG|ca_ES|cs_CZ|da_DK|de_AT|de_CH|de_DE|el_GR|en_AU|en_CA|en_GB|en_IE|en_NZ|en_PH|en_US|en_ZA|es_ES|es_MX|es_US|et_EE|eu_ES|fi_FI|fr_BE|fr_CA|fr_CH|fr_FR|ga_IE|gl_ES|he_IL|hr_HR|hu_HU|id_ID|is_IS|it_IT|iw_IL|ja_JP|ka_GE|kk_KZ|kn_CA|ko_KR|lt_LT|lv_LV|mk_MK|ml_MY|ms_MW|ms_MY|nb_NO|nl_BE|nl_NL|pl_PL|pt_BR|pt_PT|ro_RO|ru_RU|sk_SK|sl_SI|sq_AL|sv_SE|th_TH|tl_PH|tr_TR|uk_UA|zh_CH|zh_CN|zh_HK|zh_SG|zh_TW).*UTF-8"
-for loc in  `grep -E $REGEX localedata/SUPPORTED | cut -d"." -f1`; do
-  I18NPATH=localedata GCONV_PATH=iconvdata localedef --quiet -c -f UTF-8 -i $loc  %{buildroot}/usr/lib/locale/$loc.UTF-8
-done
-REGEX1="(bn_IN|fa_IR|fil_PH|gu_IN|hi_IN|km_KH|kn_IN|lo_LA|ml_IN|mr_IN|my_MM|ne_NP|or_IN|pa_IN|pa_PK|si_LK|sr_RS|ta_IN|te_IN|ur_PK)"
-for loc1 in  `grep -E $REGEX1 localedata/SUPPORTED | cut -d"/" -f1`; do
-  I18NPATH=localedata GCONV_PATH=iconvdata localedef --quiet -c -f UTF-8 -i $loc1  %{buildroot}/usr/lib/locale/$loc1
+
+CHARSET=UTF-8
+LOCALE_DIR=%{buildroot}/usr/lib/locale
+mkdir -p $LOCALE_DIR
+
+REGEX="(aa_DJ|aa_ER|aa_ET|af_ZA|am_ET|an_ES|ar_AE|ar_BH|ar_DZ|ar_EG|ar_IN|ar_IQ|ar_JO|ar_KW|ar_LB|ar_LY|ar_MA|ar_OM|ar_QA|ar_SA|ar_SD|ar_SY|ar_TN|ar_YE|as_IN|ast_ES|az_AZ|be_BY|ber_DZ|ber_MA|bg_BG|bn_BD|bn_IN|bo_CN|bo_IN|br_FR|bs_BA|byn_ER|ca_AD|ca_ES|ca_FR|ca_IT|crh_UA|csb_PL|cs_CZ|cv_RU|cy_GB|da_DK|de_AT|de_BE|de_CH|de_DE|de_LU|dv_MV|dz_BT|el_CY|el_GR|en_AG|en_AU|en_BW|en_CA|en_DK|en_GB|en_HK|en_IE|en_IN|en_NG|en_NZ|en_PH|en_SG|en_US|en_ZA|en_ZW|es_AR|es_BO|es_CL|es_CO|es_CR|es_DO|es_EC|es_ES|es_GT|es_HN|es_MX|es_NI|es_PA|es_PE|es_PR|es_PY|es_SV|es_US|es_UY|es_VE|et_EE|eu_ES|fa_IR|fi_FI|fil_PH|fo_FO|fr_BE|fr_CA|fr_CH|fr_FR|fr_LU|fur_IT|fy_DE|fy_NL|ga_IE|gd_GB|gez_ER|gez_ET|gl_ES|gu_IN|gv_GB|ha_NG|he_IL|hi_IN|hne_IN|hr_HR|hsb_DE|ht_HT|hu_HU|hy_AM|i18n|id_ID|ig_NG|ik_CA|is_IS|it_CH|it_IT|iu_CA|iw_IL|ja_JP|ka_GE|kk_KZ|kl_GL|km_KH|kn_IN|kok_IN|ko_KR|ks_IN|ku_TR|kw_GB|ky_KG|lg_UG|li_BE|li_NL|lo_LA|lt_LT|lv_LV|mai_IN|mg_MG|mi_NZ|mk_MK|ml_IN|mn_MN|mr_IN|ms_MY|mt_MT|my_MM|nb_NO|nds_DE|nds_NL|ne_NP|nl_AW|nl_BE|nl_NL|nn_NO|nr_ZA|nso_ZA|oc_FR|om_ET|om_KE|or_IN|pa_IN|pap_AN|pa_PK|pl_PL|POSIX|ps_AF|pt_BR|pt_PT|ro_RO|ru_RU|ru_UA|rw_RW|sa_IN|sc_IT|sd_IN|se_NO|shs_CA|sid_ET|si_LK|sk_SK|sl_SI|so_DJ|so_ET|so_KE|so_SO|sq_AL|sq_MK|sr_ME|sr_RS|ss_ZA|st_ZA|sv_FI|sv_SE|ta_IN|te_IN|tg_TJ|th_TH|ti_ER|ti_ET|tig_ER|tk_TM|tl_PH|tn_ZA|tr_CY|tr_TR|ts_ZA|tt_RU|ug_CN|uk_UA|ur_IN|ur_PK|uz_UZ|ve_ZA|vi_VN|wa_BE|wal_ET|wo_SN|xh_ZA|yi_US|yo_NG|zh_CN|zh_HK|zh_SG|zh_TW|zu_ZA)"
+REGEX=`echo $REGEX | sed "s#\<en\>#en_GB#" | sed "s#\<[a-z]\+\>#&_.*#g"`
+
+for LOCALE in `grep -E "^\<$REGEX\>.*/$CHARSET" localedata/SUPPORTED | cut -d '/' -f 1`
+do
+	I18NPATH=localedata GCONV_PATH=iconvdata localedef --quiet -c -f $CHARSET -i ${LOCALE%%.*} $LOCALE_DIR/$LOCALE
 done
 
 mkdir -p %{buildroot}/usr/share/i18n/
