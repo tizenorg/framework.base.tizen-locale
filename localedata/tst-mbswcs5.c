@@ -1,5 +1,5 @@
 /* Test restarting behaviour of wcrtomb.
-   Copyright (C) 2000 Free Software Foundation, Inc.
+   Copyright (C) 2000-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Bruno Haible <haible@ilog.fr>.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <stdio.h>
 #include <string.h>
@@ -26,20 +25,20 @@
 #define show(expr, nexp, bufexp) \
   {									\
     size_t res = expr;							\
-    printf (#expr " -> %Zd", res);					\
+    printf (#expr " -> %zu", res);					\
     dst += res;								\
     printf (", dst = buf+%td", dst - (char *) buf);			\
     if (res != nexp || dst != (char *) (bufexp))			\
       {									\
-	printf (", expected %Zd and buf+%td", nexp,			\
+	printf (", expected %zu and buf+%td", (size_t) nexp,		\
 		(bufexp) - (unsigned char *) buf);			\
 	result = 1;							\
       }									\
     putc ('\n', stdout);						\
   }
 
-int
-main (void)
+static int
+do_test (void)
 {
   unsigned char buf[7] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
   const unsigned char bufcheck[7] = { 0x25, 0xe2, 0x82, 0xac, 0xce, 0xbb, 0 };
@@ -73,3 +72,6 @@ main (void)
 
   return result;
 }
+
+#define TEST_FUNCTION do_test ()
+#include "../test-skeleton.c"

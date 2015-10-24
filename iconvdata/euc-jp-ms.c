@@ -1,5 +1,5 @@
 /* Mapping tables for EUCJP-MS handling.
-   Copyright (C) 1998,1999,2000,2001,2003,2007 Free Software Foundation, Inc.
+   Copyright (C) 1998-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by MORIYAMA Masayuki <msyk@mtg.biglobe.ne.jp>, 2003.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <dlfcn.h>
 #include <stdint.h>
@@ -4642,6 +4641,7 @@ static const unsigned char from_ucs4_extra[229][2] =
 #define MIN_NEEDED_FROM		1
 #define MAX_NEEDED_FROM		3
 #define MIN_NEEDED_TO		4
+#define ONE_DIRECTION		0
 
 
 /* First define the conversion function from EUC-JP-MS to UCS4.  */
@@ -4674,7 +4674,7 @@ static const unsigned char from_ucs4_extra[229][2] =
 	   character is also available.  */				      \
 	unsigned char ch2;						      \
 									      \
-	if (__builtin_expect (inptr + 1 >= inend, 0))			      \
+	if (__glibc_unlikely (inptr + 1 >= inend))			      \
 	  {								      \
 	    /* The second character is not available.  Store the	      \
 	       intermediate result.  */					      \
@@ -4685,7 +4685,7 @@ static const unsigned char from_ucs4_extra[229][2] =
 	ch2 = (unsigned char)inptr[1];					      \
 									      \
 	/* All second bytes of a multibyte character must be >= 0xa1. */      \
-	if (__builtin_expect (ch2 < 0xa1, 0))				      \
+	if (__glibc_unlikely (ch2 < 0xa1))				      \
 	  {								      \
 	    /* This is an illegal character.  */			      \
 	    if (! ignore_errors_p ())					      \
@@ -4704,7 +4704,7 @@ static const unsigned char from_ucs4_extra[229][2] =
 	    /* This is code set 2: half-width katakana.  */		      \
 	    ch = jisx0201_to_ucs4 (ch2);				      \
 	    /*if (__builtin_expect (ch, 0) == __UNKNOWN_10646_CHAR)*/	      \
-	    if (__builtin_expect (ch == __UNKNOWN_10646_CHAR, 0))	      \
+	    if (__glibc_unlikely (ch == __UNKNOWN_10646_CHAR))		      \
 	      {								      \
 		/* Illegal character.  */				      \
 		if (! ignore_errors_p ())				      \
@@ -4897,15 +4897,15 @@ static const unsigned char from_ucs4_extra[229][2] =
 	/* Now test for a possible second byte and write this if possible.  */\
 	if (cp[1] != '\0')						      \
 	  {								      \
-	    if (__builtin_expect (outptr + 1 >= outend, 0))		      \
+	    if (__glibc_unlikely (outptr + 1 >= outend))		      \
 	      {								      \
 		/* The result does not fit into the buffer.  */		      \
 		result = __GCONV_FULL_OUTPUT;				      \
 		break;							      \
 	      }								      \
-	    if (__builtin_expect (cp[1] < 0x80, 0))			      \
+	    if (__glibc_unlikely (cp[1] < 0x80))			      \
 	      {								      \
-		if (__builtin_expect (outptr + 2 >= outend, 0))		      \
+		if (__glibc_unlikely (outptr + 2 >= outend))		      \
 		  {							      \
 		    /* The result does not fit into the buffer.  */	      \
 		    result = __GCONV_FULL_OUTPUT;			      \

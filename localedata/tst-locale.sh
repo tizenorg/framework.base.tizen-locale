@@ -1,9 +1,8 @@
 #! /bin/sh
 # Testing the implementation of localedata.
-# Copyright (C) 1998, 2000 Free Software Foundation, Inc.
+# Copyright (C) 1998-2015 Free Software Foundation, Inc.
 # This file is part of the GNU C Library.
 # Contributed by Andreas Jaeger, <aj@arthur.rhein-neckar.de>, 1998.
-#
 
 # The GNU C Library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,12 +15,15 @@
 # Lesser General Public License for more details.
 
 # You should have received a copy of the GNU Lesser General Public
-# License along with the GNU C Library; if not, write to the Free
-# Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-# 02111-1307 USA.
+# License along with the GNU C Library; if not, see
+# <http://www.gnu.org/licenses/>.
+
+set -e
 
 common_objpfx=$1; shift
-localedef=$1; shift
+localedef_before_env=$1; shift
+run_program_env=$1; shift
+localedef_after_env=$1; shift
 
 test_locale ()
 {
@@ -32,9 +34,10 @@ test_locale ()
     if test $rep; then
       rep="--repertoire-map $rep"
     fi
-    I18NPATH=. GCONV_PATH=${common_objpfx}iconvdata \
-    LOCPATH=${common_objpfx}localedata LC_ALL=C LANGUAGE=C \
-    ${localedef} --quiet -c -f $charmap -i $input \
+    ${localedef_before_env} \
+    ${run_program_env} \
+    I18NPATH=. \
+    ${localedef_after_env} --quiet -c -f $charmap -i $input \
       ${rep} ${common_objpfx}localedata/$out
 
     if [ $? -ne 0 ]; then

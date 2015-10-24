@@ -1,5 +1,5 @@
 /* Conversion to and from the various ISO 646 CCS.
-   Copyright (C) 1998, 1999, 2000-2002 Free Software Foundation, Inc.
+   Copyright (C) 1998-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Ulrich Drepper <drepper@cygnus.com>, 1998.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 /* The implementation of the conversion which can be performed by this
    module are not very sophisticated and not tuned at all.  There are
@@ -44,6 +43,8 @@
 #define DEFINE_FINI		0
 #define MIN_NEEDED_FROM		1
 #define MIN_NEEDED_TO		4
+#define ONE_DIRECTION		0
+
 #define FROM_DIRECTION		(dir == from_iso646)
 #define PREPARE_LOOP \
   enum direction dir = ((struct iso646_data *) step->__data)->dir;	      \
@@ -871,7 +872,7 @@ gconv_end (struct __gconv_step *data)
 	ch = 0x5d;							      \
 	break;								      \
       default:								      \
-	if (__builtin_expect (ch > 0x7f, 0))				      \
+	if (__glibc_unlikely (ch > 0x7f))				      \
 	  {								      \
 	    UNICODE_TAG_HANDLER (ch, 4);				      \
 	    failure = __GCONV_ILLEGAL_INPUT;				      \

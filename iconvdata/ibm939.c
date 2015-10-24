@@ -1,5 +1,5 @@
 /* Conversion to and from IBM939.
-   Copyright (C) 2000-2002, 2005, 2008 Free Software Foundation, Inc.
+   Copyright (C) 2000-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Masahide Washizawa <washi@yamato.ibm.co.jp>, 2000.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <dlfcn.h>
 #include <stdint.h>
@@ -32,6 +31,7 @@
 #define CHARSET_NAME	"IBM939//"
 #define FROM_LOOP	from_ibm939
 #define TO_LOOP		to_ibm939
+#define ONE_DIRECTION			0
 #define FROM_LOOP_MIN_NEEDED_FROM	1
 #define FROM_LOOP_MAX_NEEDED_FROM	2
 #define FROM_LOOP_MIN_NEEDED_TO		4
@@ -62,7 +62,7 @@
 	{								      \
 	  /* We are not in the initial state.  To switch back we have	      \
 	     to emit `SI'.  */						      \
-	  if (__builtin_expect (outbuf >= outend, 0))			      \
+	  if (__glibc_unlikely (outbuf >= outend))			      \
 	    /* We don't have enough room in the output buffer.  */	      \
 	    status = __GCONV_FULL_OUTPUT;				      \
 	  else								      \
@@ -150,7 +150,7 @@ enum
 									      \
 	assert (curcs == db);						      \
 									      \
-	if (__builtin_expect (inptr + 1 >= inend, 0))			      \
+	if (__glibc_unlikely (inptr + 1 >= inend))			      \
 	  {								      \
 	    /* The second character is not available.  Store the	      \
 	       intermediate result. */					      \
@@ -162,7 +162,7 @@ enum
 	while (ch > rp2->end)						      \
 	  ++rp2;							      \
 									      \
-	if (__builtin_expect (rp2 == NULL, 0)				      \
+	if (__builtin_expect (rp2->start == 0xffff, 0)			      \
 	    || __builtin_expect (ch < rp2->start, 0)			      \
 	    || (res = __ibm939db_to_ucs4[ch + rp2->idx],		      \
 		__builtin_expect (res, L'\1') == L'\0' && ch != '\0'))	      \
@@ -197,7 +197,7 @@ enum
     const struct gap *rp2 = __ucs4_to_ibm939db_idx;			      \
     const char *cp;							      \
 									      \
-    if (__builtin_expect (ch >= 0xffff, 0))				      \
+    if (__glibc_unlikely (ch >= 0xffff))				      \
       {									      \
 	UNICODE_TAG_HANDLER (ch, 4);					      \
 	goto ibm939_invalid_char;					      \
@@ -227,7 +227,7 @@ enum
 	  {								      \
 	    if (curcs == sb)						      \
 	      {								      \
-		if (__builtin_expect (outptr + 1 > outend, 0))		      \
+		if (__glibc_unlikely (outptr + 1 > outend))		      \
 		  {							      \
 		    result = __GCONV_FULL_OUTPUT;			      \
 		    break;						      \
@@ -236,7 +236,7 @@ enum
 		curcs = db;						      \
 	      }								      \
 									      \
-	    if (__builtin_expect (outptr + 2 > outend, 0))		      \
+	    if (__glibc_unlikely (outptr + 2 > outend))			      \
 	      {								      \
 		result = __GCONV_FULL_OUTPUT;				      \
 		break;							      \
@@ -249,7 +249,7 @@ enum
       {									      \
 	if (curcs == db)						      \
 	  {								      \
-	    if (__builtin_expect (outptr + 1 > outend, 0))		      \
+	    if (__glibc_unlikely (outptr + 1 > outend))			      \
 	      {								      \
 		result = __GCONV_FULL_OUTPUT;				      \
 		break;							      \
@@ -257,7 +257,7 @@ enum
 	    *outptr++ = SI;						      \
 	  }								      \
 									      \
-	if (__builtin_expect (outptr + 1 > outend, 0))			      \
+	if (__glibc_unlikely (outptr + 1 > outend))			      \
 	  {								      \
 	    result = __GCONV_FULL_OUTPUT;				      \
 	    break;							      \

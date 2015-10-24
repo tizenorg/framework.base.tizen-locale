@@ -1,9 +1,8 @@
 #! /bin/sh -f
 # Run available iconv(1) tests.
-# Copyright (C) 1998-2002, 2005, 2006, 2008 Free Software Foundation, Inc.
+# Copyright (C) 1998-2015 Free Software Foundation, Inc.
 # This file is part of the GNU C Library.
 # Contributed by Ulrich Drepper <drepper@cygnus.com>, 1998.
-#
 
 # The GNU C Library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,12 +15,14 @@
 # Lesser General Public License for more details.
 
 # You should have received a copy of the GNU Lesser General Public
-# License along with the GNU C Library; if not, write to the Free
-# Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-# 02111-1307 USA.
+# License along with the GNU C Library; if not, see
+# <http://www.gnu.org/licenses/>.
+
+set -e
 
 codir=$1
-cross_test_wrapper="$2"
+test_wrapper_env="$2"
+run_program_env="$3"
 
 # We use always the same temporary file.
 temp1=$codir/iconvdata/iconv-test.xxx
@@ -29,18 +30,13 @@ temp2=$codir/iconvdata/iconv-test.yyy
 
 trap "rm -f $temp1 $temp2" 1 2 3 15
 
-# We must tell the iconv(1) program where the modules we want to use can
-# be found.
-GCONV_PATH=$codir/iconvdata
-export GCONV_PATH
-
 # We have to have some directories in the library path.
 LIBPATH=$codir:$codir/iconvdata
 
 # How the start the iconv(1) program.
 ICONV='$codir/elf/ld.so --library-path $LIBPATH --inhibit-rpath ${from}.so \
        $codir/iconv/iconv_prog'
-ICONV="$cross_test_wrapper $ICONV"
+ICONV="$test_wrapper_env $run_program_env $ICONV"
 
 # Which echo?
 if (echo "testing\c"; echo 1,2,3) | grep c >/dev/null; then
@@ -51,13 +47,8 @@ fi
 
 # We read the file named TESTS.  All non-empty lines not starting with
 # `#' are interpreted as commands.
-# Avoid reading from stdin, since the while loop's body inherits that;
-# if cross_test_wrapper is a program like ssh that reads its input
-# even if the program running on the remote side doesn't, it will
-# steal input from the loop.
 failed=0
-exec 5< TESTS
-while read from to subset targets <&5; do
+while read from to subset targets; do
   # Ignore empty and comment lines.
   if test -z "$subset" || test "$from" = '#'; then continue; fi
 
@@ -68,7 +59,7 @@ while read from to subset targets <&5; do
     for t in $targets; do
       if test -f testdata/$from; then
 	echo $ac_n "   test data: $from -> $t $ac_c"
-	$PROG -f $from -t $t testdata/$from > $temp1 ||
+	$PROG -f $from -t $t testdata/$from < /dev/null > $temp1 ||
 	  { if test $? -gt 128; then exit 1; fi
 	    echo "FAILED"; failed=1; continue; }
 	echo $ac_n "OK$ac_c"
@@ -78,7 +69,7 @@ while read from to subset targets <&5; do
 	  echo $ac_n "/OK$ac_c"
 	fi
 	echo $ac_n " -> $from $ac_c"
-	$PROG -f $t -t $to -o $temp2 $temp1 ||
+	$PROG -f $t -t $to -o $temp2 $temp1 < /dev/null ||
 	  { if test $? -gt 128; then exit 1; fi
 	    echo "FAILED"; failed=1; continue; }
 	echo $ac_n "OK$ac_c"
@@ -94,7 +85,7 @@ while read from to subset targets <&5; do
       # set.  Otherwise we convert to all the TARGETS.
       if test $subset = Y; then
 	echo $ac_n "      suntzu: $from -> $t -> $to $ac_c"
-	$PROG -f $from -t $t testdata/suntzus |
+	$PROG -f $from -t $t testdata/suntzus < /dev/null |
 	$PROG -f $t -t $to > $temp1 ||
 	  { if test $? -gt 128; then exit 1; fi
 	    echo "FAILED"; failed=1; continue; }
@@ -113,7 +104,7 @@ while read from to subset targets <&5; do
 	 ! grep '<U....><U....>' ../localedata/charmaps/$from > /dev/null; then
 	echo $ac_n "test charmap: $from -> $t $ac_c"
 	$PROG -f ../localedata/charmaps/$from -t ../localedata/charmaps/$tc \
-	      testdata/$from > $temp1 ||
+	      testdata/$from < /dev/null > $temp1 ||
 	  { if test $? -gt 128; then exit 1; fi
 	    echo "FAILED"; failed=1; continue; }
 	echo $ac_n "OK$ac_c"
@@ -124,7 +115,7 @@ while read from to subset targets <&5; do
 	fi
 	echo $ac_n " -> $from $ac_c"
 	$PROG -t ../localedata/charmaps/$from -f ../localedata/charmaps/$tc \
-	      -o $temp2 $temp1 ||
+	      -o $temp2 $temp1 < /dev/null ||
 	  { if test $? -gt 128; then exit 1; fi
 	    echo "FAILED"; failed=1; continue; }
 	echo $ac_n "OK$ac_c"
@@ -139,7 +130,7 @@ while read from to subset targets <&5; do
 
   if test "$subset" = N; then
     echo $ac_n "      suntzu: ASCII -> $to -> ASCII $ac_c"
-    $PROG -f ASCII -t $to testdata/suntzus |
+    $PROG -f ASCII -t $to testdata/suntzus < /dev/null |
     $PROG -f $to -t ASCII > $temp1 ||
       { if test $? -gt 128; then exit 1; fi
 	echo "FAILED"; failed=1; continue; }
@@ -148,18 +139,11 @@ while read from to subset targets <&5; do
       { echo "/FAILED"; failed=1; continue; }
     echo "/OK"
   fi
-done
-# Close TESTS.
-exec 5<&-
+done < TESTS
 
 # We read the file named TESTS2.  All non-empty lines not starting with
 # `#' are interpreted as commands.
-# Avoid reading from stdin, since the while loop's body inherits that;
-# if cross_test_wrapper is a program like ssh that reads its input
-# even if the program running on the remote side doesn't, it will
-# steal input from the loop.
-exec 5< TESTS2
-while read utf8 from filename <&5; do
+while read utf8 from filename; do
   # Ignore empty and comment lines.
   if test -z "$filename" || test "$utf8" = '#'; then continue; fi
 
@@ -198,8 +182,25 @@ while read utf8 from filename <&5; do
     { echo "/FAILED"; failed=1; continue; }
   echo "OK"
 
+done < TESTS2
+
+# Check for crashes in decoders.
+printf '\016\377\377\377\377\377\377\377' > $temp1
+for from in $iconv_modules ; do
+    echo $ac_n "test decoder $from $ac_c"
+    PROG=`eval echo $ICONV`
+    if $PROG -f $from -t UTF8 < $temp1 >/dev/null 2>&1 ; then
+	: # fall through
+    else
+	status=$?
+	if test $status -gt 1 ; then
+	    echo "/FAILED"
+	    failed=1
+	    continue
+	fi
+    fi
+    echo "OK"
 done
-exec 5<&-
 
 exit $failed
 # Local Variables:

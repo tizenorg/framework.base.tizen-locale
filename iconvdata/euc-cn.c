@@ -1,5 +1,5 @@
 /* Mapping tables for EUC-CN handling.
-   Copyright (C) 1998, 1999, 2000-2002 Free Software Foundation, Inc.
+   Copyright (C) 1998-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Ulrich Drepper <drepper@cygnus.com>, 1998.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <dlfcn.h>
 #include <gb2312.h>
@@ -31,6 +30,7 @@
 #define MIN_NEEDED_FROM		1
 #define MAX_NEEDED_FROM		2
 #define MIN_NEEDED_TO		4
+#define ONE_DIRECTION		0
 
 
 /* First define the conversion function from EUC-CN to UCS4.  */
@@ -57,7 +57,7 @@
 	     next byte is also available.  */				      \
 	  const unsigned char *endp;					      \
 									      \
-	  if (__builtin_expect (inptr + 1 >= inend, 0))			      \
+	  if (__glibc_unlikely (inptr + 1 >= inend))			      \
 	    {								      \
 	      /* The second character is not available.  Store		      \
 		 the intermediate result.  */				      \
@@ -68,14 +68,14 @@
 	  ch = inptr[1];						      \
 									      \
 	  /* All second bytes of a multibyte character must be >= 0xa1. */    \
-	  if (__builtin_expect (ch < 0xa1, 0))				      \
+	  if (__glibc_unlikely (ch < 0xa1))				      \
 	    STANDARD_FROM_LOOP_ERR_HANDLER (1);				      \
 									      \
 	  /* This is code set 1: GB 2312-80.  */			      \
 	  endp = inptr;							      \
 									      \
 	  ch = gb2312_to_ucs4 (&endp, 2, 0x80);				      \
-	  if (__builtin_expect (ch == __UNKNOWN_10646_CHAR, 0))		      \
+	  if (__glibc_unlikely (ch == __UNKNOWN_10646_CHAR))		      \
 	    {								      \
 	      /* This is an illegal character.  */			      \
 	      STANDARD_FROM_LOOP_ERR_HANDLER (2);			      \

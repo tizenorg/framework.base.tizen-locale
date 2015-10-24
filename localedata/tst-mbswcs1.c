@@ -1,5 +1,5 @@
 /* Test restarting behaviour of mbrtowc.
-   Copyright (C) 2000, 2005 Free Software Foundation, Inc.
+   Copyright (C) 2000-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Bruno Haible <haible@ilog.fr>.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <stdio.h>
 #include <string.h>
@@ -25,17 +24,18 @@
 
 #define show(expr, nexp, wcexp) \
   n = expr;								  \
-  printf (#expr " -> %Zd", n);						  \
+  printf (#expr " -> %zu", n);						  \
   printf (", wc = %lu", (unsigned long int) wc);			  \
   if (n != (size_t) nexp || wc != wcexp)				  \
     {									  \
-      printf (", expected %Zd and %lu", nexp, (unsigned long int) wcexp); \
+      printf (", expected %zu and %lu", (size_t) nexp,			  \
+	      (unsigned long int) wcexp);				  \
       result = 1;							  \
     }									  \
   putc ('\n', stdout)
 
-int
-main (void)
+static int
+do_test (void)
 {
   const unsigned char buf[6] = { 0x25,  0xe2, 0x82, 0xac,  0xce, 0xbb };
   mbstate_t state;
@@ -61,3 +61,6 @@ main (void)
 
   return result;
 }
+
+#define TEST_FUNCTION do_test ()
+#include "../test-skeleton.c"

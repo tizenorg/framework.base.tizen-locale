@@ -1,5 +1,5 @@
 /* Conversion to and from ISO 8859-1.
-   Copyright (C) 1997-1999, 2000-2004 Free Software Foundation, Inc.
+   Copyright (C) 1997-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Ulrich Drepper <drepper@cygnus.com>, 1997.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <dlfcn.h>
 #include <stdint.h>
@@ -29,6 +28,7 @@
 #define DEFINE_FINI		1
 #define MIN_NEEDED_FROM		1
 #define MIN_NEEDED_TO		4
+#define ONE_DIRECTION		0
 
 /* First define the conversion function from ISO 8859-1 to UCS4.  */
 #define MIN_NEEDED_INPUT	MIN_NEEDED_FROM
@@ -51,7 +51,7 @@
 #define BODY \
   {									      \
     uint32_t ch = *((const uint32_t *) inptr);				      \
-    if (__builtin_expect (ch > 0xff, 0))				      \
+    if (__glibc_unlikely (ch > 0xff))					      \
       {									      \
 	UNICODE_TAG_HANDLER (ch, 4);					      \
 									      \

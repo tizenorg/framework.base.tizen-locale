@@ -1,5 +1,5 @@
 /* Conversion module for ISO-2022-CN.
-   Copyright (C) 1999, 2000-2002, 2007, 2008 Free Software Foundation, Inc.
+   Copyright (C) 1999-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Ulrich Drepper <drepper@cygnus.com>, 1999.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <dlfcn.h>
 #include <gconv.h>
@@ -45,6 +44,7 @@
 #define DEFINE_FINI		1
 #define FROM_LOOP		from_iso2022cn_loop
 #define TO_LOOP			to_iso2022cn_loop
+#define ONE_DIRECTION			0
 #define FROM_LOOP_MIN_NEEDED_FROM	1
 #define FROM_LOOP_MAX_NEEDED_FROM	4
 #define FROM_LOOP_MIN_NEEDED_TO		4
@@ -89,7 +89,7 @@ enum
 	{								      \
 	  /* We are not in the initial state.  To switch back we have	      \
 	     to emit `SI'.  */						      \
-	  if (__builtin_expect (outbuf == outend, 0))			      \
+	  if (__glibc_unlikely (outbuf == outend))			      \
 	    /* We don't have enough room in the output buffer.  */	      \
 	    status = __GCONV_FULL_OUTPUT;				      \
 	  else								      \
@@ -122,7 +122,7 @@ enum
     uint32_t ch = *inptr;						      \
 									      \
     /* This is a 7bit character set, disallow all 8bit characters.  */	      \
-    if (__builtin_expect (ch >= 0x7f, 0))				      \
+    if (__glibc_unlikely (ch >= 0x7f))					      \
       STANDARD_FROM_LOOP_ERR_HANDLER (1);				      \
 									      \
     /* Recognize escape sequences.  */					      \
@@ -247,7 +247,7 @@ enum
 	  {								      \
 	    *outptr++ = SI;						      \
 	    set = ASCII_set;						      \
-	    if (__builtin_expect (outptr == outend, 0))			      \
+	    if (__glibc_unlikely (outptr == outend))			      \
 	      {								      \
 		result = __GCONV_FULL_OUTPUT;				      \
 		break;							      \
@@ -320,7 +320,7 @@ enum
 	      {								      \
 		const char *escseq;					      \
 									      \
-		if (__builtin_expect (outptr + 4 > outend, 0))		      \
+		if (__glibc_unlikely (outptr + 4 > outend))		      \
 		  {							      \
 		    result = __GCONV_FULL_OUTPUT;			      \
 		    break;						      \
@@ -343,7 +343,7 @@ enum
 									      \
 	    if (used == CNS11643_2_set)					      \
 	      {								      \
-		if (__builtin_expect (outptr + 2 > outend, 0))		      \
+		if (__glibc_unlikely (outptr + 2 > outend))		      \
 		  {							      \
 		    result = __GCONV_FULL_OUTPUT;			      \
 		    break;						      \
@@ -358,7 +358,7 @@ enum
 		   SO charset.  */					      \
 		if (set == ASCII_set)					      \
 		  {							      \
-		    if (__builtin_expect (outptr + 1 > outend, 0))	      \
+		    if (__glibc_unlikely (outptr + 1 > outend))		      \
 		      {							      \
 			result = __GCONV_FULL_OUTPUT;			      \
 			break;						      \
@@ -369,13 +369,13 @@ enum
 									      \
 	    /* Always test the length here since we have used up all the      \
 	       guaranteed output buffer slots.  */			      \
-	    if (__builtin_expect (outptr + 2 > outend, 0))		      \
+	    if (__glibc_unlikely (outptr + 2 > outend))			      \
 	      {								      \
 		result = __GCONV_FULL_OUTPUT;				      \
 		break;							      \
 	      }								      \
 	  }								      \
-	else if (__builtin_expect (outptr + 2 > outend, 0))		      \
+	else if (__glibc_unlikely (outptr + 2 > outend))		      \
 	  {								      \
 	    result = __GCONV_FULL_OUTPUT;				      \
 	    break;							      \

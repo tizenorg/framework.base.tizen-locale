@@ -1,9 +1,8 @@
 #! /bin/sh
 # Testing the implementation of strfmon(3).
-# Copyright (C) 1996-1998, 2000, 2003, 2004 Free Software Foundation, Inc.
+# Copyright (C) 1996-2015 Free Software Foundation, Inc.
 # This file is part of the GNU C Library.
 # Contributed by Jochen Hein <jochen.hein@delphi.central.de>, 1997.
-#
 
 # The GNU C Library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -16,13 +15,17 @@
 # Lesser General Public License for more details.
 
 # You should have received a copy of the GNU Lesser General Public
-# License along with the GNU C Library; if not, write to the Free
-# Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-# 02111-1307 USA.
+# License along with the GNU C Library; if not, see
+# <http://www.gnu.org/licenses/>.
+
+set -e
 
 common_objpfx=$1
-run_program_prefix=$2
-datafile=$3
+run_program_prefix_before_env=$2
+run_program_env=$3
+run_program_prefix_after_env=$4
+test_program_prefix=$5
+datafile=$6
 
 here=`pwd`
 
@@ -32,13 +35,11 @@ lang=`sed -e '/^#/d' -e '/^$/d' -e '/^C	/d' -e '/^tstfmon/d' -e 's/^\([^	]*\).*/
 for cns in `cd ./tst-fmon-locales && ls tstfmon_*`; do
     cn=tst-fmon-locales/$cns
     fn=charmaps/ISO-8859-1
-    # If run_program_prefix includes a cross-testing wrapper based on a
-    # program like ssh, it may steal input from the while loop, so
-    # redirect its stdin from /dev/null.
-    I18NPATH=. GCONV_PATH=${common_objpfx}iconvdata \
-    LOCPATH=${common_objpfx}localedata LC_ALL=C LANGUAGE=C \
-    ${run_program_prefix} ${common_objpfx}locale/localedef \
-    --quiet -i $cn -f $fn ${common_objpfx}localedata/$cns < /dev/null
+    ${run_program_prefix_before_env} \
+    ${run_program_env} \
+    I18NPATH=. \
+    ${run_program_prefix_after_env} ${common_objpfx}locale/localedef \
+    --quiet -i $cn -f $fn ${common_objpfx}localedata/$cns
 done
 
 # Run the tests.
@@ -48,12 +49,7 @@ while IFS="	" read locale format value expect; do
     case "$locale" in '#'*) continue ;; esac
     if [ -n "$format" ]; then
 	expect=`echo "$expect" | sed 's/^\"\(.*\)\"$/\1/'`
-        # If run_program_prefix includes a cross-testing wrapper based on a
-        # program like ssh, it may steal input from the while loop, so
-        # redirect its stdin from /dev/null.
-	LOCPATH=${common_objpfx}localedata \
-	GCONV_PATH=${common_objpfx}/iconvdata \
-	${run_program_prefix} ${common_objpfx}localedata/tst-fmon \
+	${test_program_prefix} ${common_objpfx}localedata/tst-fmon \
 	"$locale" "$format" "$value" "$expect" < /dev/null ||
 	errcode=$?
     fi

@@ -1,6 +1,5 @@
 /* Conversion module for ISO-2022-JP-3.
-   Copyright (C) 1998-1999, 2000-2002, 2004, 2008
-   Free Software Foundation, Inc.
+   Copyright (C) 1998-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Ulrich Drepper <drepper@cygnus.com>, 1998,
    and Bruno Haible <bruno@clisp.org>, 2002.
@@ -16,9 +15,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <assert.h>
 #include <dlfcn.h>
@@ -39,6 +37,7 @@
 #define TO_LOOP			to_iso2022jp3_loop
 #define DEFINE_INIT		1
 #define DEFINE_FINI		1
+#define ONE_DIRECTION		0
 #define FROM_LOOP_MIN_NEEDED_FROM	1
 #define FROM_LOOP_MAX_NEEDED_FROM	4
 #define FROM_LOOP_MIN_NEEDED_TO		4
@@ -98,7 +97,7 @@ enum
 	    + ((data->__statep->__count & CURRENT_SEL_MASK) != ASCII_set      \
 	       ? 3 : 0);						      \
 									      \
-	  if (__builtin_expect (outbuf + need > outend, 0))		      \
+	  if (__glibc_unlikely (outbuf + need > outend))		      \
 	    /* We don't have enough room in the output buffer.  */	      \
 	    status = __GCONV_FULL_OUTPUT;				      \
 	  else								      \
@@ -155,7 +154,7 @@ enum
     uint32_t ch = *inptr;						      \
 									      \
     /* Recognize escape sequences.  */					      \
-    if (__builtin_expect (ch == ESC, 0))				      \
+    if (__glibc_unlikely (ch == ESC))					      \
       {									      \
 	/* We now must be prepared to read two to three more bytes.	      \
 	   If we have a match in the first byte but then the input buffer     \
@@ -244,7 +243,7 @@ enum
       {									      \
 	/* Use the JIS X 0201 table.  */				      \
 	ch = jisx0201_to_ucs4 (ch);					      \
-	if (__builtin_expect (ch == __UNKNOWN_10646_CHAR, 0))		      \
+	if (__glibc_unlikely (ch == __UNKNOWN_10646_CHAR))		      \
 	  {								      \
 	    STANDARD_FROM_LOOP_ERR_HANDLER (1);				      \
 	  }								      \
@@ -254,7 +253,7 @@ enum
       {									      \
 	/* Use the JIS X 0201 table.  */				      \
 	ch = jisx0201_to_ucs4 (ch + 0x80);				      \
-	if (__builtin_expect (ch == __UNKNOWN_10646_CHAR, 0))		      \
+	if (__glibc_unlikely (ch == __UNKNOWN_10646_CHAR))		      \
 	  {								      \
 	    STANDARD_FROM_LOOP_ERR_HANDLER (1);				      \
 	  }								      \
@@ -268,19 +267,19 @@ enum
 	   provide the appropriate tables.  */				      \
 	ch = jisx0208_to_ucs4 (&inptr, inend - inptr, 0);		      \
 									      \
-	if (__builtin_expect (ch == 0, 0))				      \
+	if (__glibc_unlikely (ch == 0))					      \
 	  {								      \
 	    result = __GCONV_INCOMPLETE_INPUT;				      \
 	    break;							      \
 	  }								      \
-	else if (__builtin_expect (ch == __UNKNOWN_10646_CHAR, 0))	      \
+	else if (__glibc_unlikely (ch == __UNKNOWN_10646_CHAR))		      \
 	  {								      \
 	    STANDARD_FROM_LOOP_ERR_HANDLER (1);				      \
 	  }								      \
       }									      \
     else /* (set == JISX0213_1_2004_set || set == JISX0213_2_set) */	      \
       {									      \
-	if (__builtin_expect (inptr + 1 >= inend, 0))			      \
+	if (__glibc_unlikely (inptr + 1 >= inend))			      \
 	  {								      \
 	    result = __GCONV_INCOMPLETE_INPUT;				      \
 	    break;							      \
@@ -418,7 +417,7 @@ static const struct
 	       || (set != JISX0213_1_2000_set && set != JISX0213_1_2004_set)  \
 	       ? 4 : 0);						      \
 									      \
-	    if (__builtin_expect (outptr + need + 2 > outend, 0))	      \
+	    if (__glibc_unlikely (outptr + need + 2 > outend))		      \
 	      {								      \
 		result = __GCONV_FULL_OUTPUT;				      \
 		break;							      \
@@ -446,7 +445,7 @@ static const struct
 	{								      \
 	  size_t need = (lasttwo >> 16 ? 3 : 0);			      \
 									      \
-	  if (__builtin_expect (outptr + need + 2 > outend, 0))		      \
+	  if (__glibc_unlikely (outptr + need + 2 > outend))		      \
 	    {								      \
 	      result = __GCONV_FULL_OUTPUT;				      \
 	      break;							      \
@@ -522,7 +521,7 @@ static const struct
 		inptr += 4;						      \
 		continue;						      \
 	      }								      \
-	    if (__builtin_expect (written == 0, 0))			      \
+	    if (__glibc_unlikely (written == 0))			      \
 	      {								      \
 		result = __GCONV_FULL_OUTPUT;				      \
 		break;							      \
@@ -560,7 +559,7 @@ static const struct
 		continue;						      \
 	      }								      \
 									      \
-	    if (__builtin_expect (outptr + 1 >= outend, 0))		      \
+	    if (__glibc_unlikely (outptr + 1 >= outend))		      \
 	      {								      \
 		result = __GCONV_FULL_OUTPUT;				      \
 		break;							      \
@@ -580,7 +579,7 @@ static const struct
       {									      \
 	/* We must encode using ASCII.  First write out the escape	      \
 	   sequence.  */						      \
-	if (__builtin_expect (outptr + 3 > outend, 0))			      \
+	if (__glibc_unlikely (outptr + 3 > outend))			      \
 	  {								      \
 	    result = __GCONV_FULL_OUTPUT;				      \
 	    break;							      \
@@ -591,7 +590,7 @@ static const struct
 	*outptr++ = 'B';						      \
 	set = ASCII_set;						      \
 									      \
-	if (__builtin_expect (outptr >= outend, 0))			      \
+	if (__glibc_unlikely (outptr >= outend))			      \
 	  {								      \
 	    result = __GCONV_FULL_OUTPUT;				      \
 	    break;							      \
@@ -608,7 +607,7 @@ static const struct
 	  {								      \
 	    if (set != JISX0201_Roman_set)				      \
 	      {								      \
-		if (__builtin_expect (outptr + 3 > outend, 0))		      \
+		if (__glibc_unlikely (outptr + 3 > outend))		      \
 		  {							      \
 		    result = __GCONV_FULL_OUTPUT;			      \
 		    break;						      \
@@ -619,7 +618,7 @@ static const struct
 		set = JISX0201_Roman_set;				      \
 	      }								      \
 									      \
-	    if (__builtin_expect (outptr >= outend, 0))			      \
+	    if (__glibc_unlikely (outptr >= outend))			      \
 	      {								      \
 		result = __GCONV_FULL_OUTPUT;				      \
 		break;							      \
@@ -646,7 +645,7 @@ static const struct
 									      \
 		if (set != JISX0208_1983_set)				      \
 		  {							      \
-		    if (__builtin_expect (outptr + 3 > outend, 0))	      \
+		    if (__glibc_unlikely (outptr + 3 > outend))		      \
 		      {							      \
 			result = __GCONV_FULL_OUTPUT;			      \
 			break;						      \
@@ -657,7 +656,7 @@ static const struct
 		    set = JISX0208_1983_set;				      \
 		  }							      \
 									      \
-		if (__builtin_expect (outptr + 2 > outend, 0))		      \
+		if (__glibc_unlikely (outptr + 2 > outend))		      \
 		  {							      \
 		    result = __GCONV_FULL_OUTPUT;			      \
 		    break;						      \
@@ -679,7 +678,7 @@ static const struct
 									      \
 		    if (set != new_set)					      \
 		      {							      \
-			if (__builtin_expect (outptr + 4 > outend, 0))	      \
+			if (__glibc_unlikely (outptr + 4 > outend))	      \
 			  {						      \
 			    result = __GCONV_FULL_OUTPUT;		      \
 			    break;					      \
@@ -705,7 +704,7 @@ static const struct
 			continue;					      \
 		      }							      \
 									      \
-		    if (__builtin_expect (outptr + 1 >= outend, 0))	      \
+		    if (__glibc_unlikely (outptr + 1 >= outend))	      \
 		      {							      \
 			result = __GCONV_FULL_OUTPUT;			      \
 			break;						      \
@@ -734,7 +733,7 @@ static const struct
 			    set = JISX0201_Kana_set;			      \
 			  }						      \
 									      \
-			if (__builtin_expect (outptr >= outend, 0))	      \
+			if (__glibc_unlikely (outptr >= outend))	      \
 			  {						      \
 			    result = __GCONV_FULL_OUTPUT;		      \
 			    break;					      \

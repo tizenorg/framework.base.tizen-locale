@@ -1,5 +1,5 @@
 /* Mapping tables for UHC handling.
-   Copyright (C) 1998, 1999, 2000-2002, 2007 Free Software Foundation, Inc.
+   Copyright (C) 1998-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Jungshik Shin <jshin@pantheon.yale.edu>, 1998.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <dlfcn.h>
 #include <stdint.h>
@@ -3045,6 +3044,7 @@ static const char uhc_hangul_from_ucs[11172][2] =
 #define MIN_NEEDED_FROM		1
 #define MAX_NEEDED_FROM		2
 #define MIN_NEEDED_TO		4
+#define ONE_DIRECTION		0
 
 /* First define the conversion function from UHC to UCS4.  */
 #define MIN_NEEDED_INPUT	MIN_NEEDED_FROM
@@ -3077,7 +3077,7 @@ static const char uhc_hangul_from_ucs[11172][2] =
 	   is also available.  */					      \
 	uint32_t ch2;							      \
 									      \
-	if (__builtin_expect (inptr + 1 >= inend, 0))			      \
+	if (__glibc_unlikely (inptr + 1 >= inend))			      \
 	  {								      \
 	    /* The second character is not available.  Store		      \
 	       the intermediate result.  */				      \
@@ -3124,7 +3124,7 @@ static const char uhc_hangul_from_ucs[11172][2] =
 				     ? (ch - 0x81) * 178		      \
 				     : 5696 + (ch - 0xa1) * 84)];	      \
 									      \
-	    if (__builtin_expect (ch == 0, 0))				      \
+	    if (__glibc_unlikely (ch == 0))				      \
 	      {								      \
 		/* This is an illegal character.  */			      \
 		STANDARD_FROM_LOOP_ERR_HANDLER (2);			      \
@@ -3174,7 +3174,7 @@ static const char uhc_hangul_from_ucs[11172][2] =
       {									      \
 	const char *s = uhc_hangul_from_ucs[ch - 0xac00];		      \
 									      \
-	if (__builtin_expect (outptr + 2 > outend, 0))			      \
+	if (__glibc_unlikely (outptr + 2 > outend))			      \
 	  {								      \
 	    result = __GCONV_FULL_OUTPUT;				      \
 	    break;							      \
@@ -3187,12 +3187,12 @@ static const char uhc_hangul_from_ucs[11172][2] =
       {									      \
 	size_t written = ucs4_to_ksc5601_hanja (ch, outptr, outend - outptr); \
 									      \
-	if (__builtin_expect (written == 0, 0))				      \
+	if (__glibc_unlikely (written == 0))				      \
 	  {								      \
 	    result = __GCONV_FULL_OUTPUT;				      \
 	    break;							      \
 	  }								      \
-	if (__builtin_expect (written == __UNKNOWN_10646_CHAR, 0))	      \
+	if (__glibc_unlikely (written == __UNKNOWN_10646_CHAR))		      \
 	  {								      \
 	    STANDARD_TO_LOOP_ERR_HANDLER (4);				      \
 	  }								      \
@@ -3214,7 +3214,7 @@ static const char uhc_hangul_from_ucs[11172][2] =
 	    UNICODE_TAG_HANDLER (ch, 4);				      \
 	    STANDARD_TO_LOOP_ERR_HANDLER (4);				      \
 	  }								      \
-	if (__builtin_expect (written == 0, 0))				      \
+	if (__glibc_unlikely (written == 0))				      \
 	  {								      \
 	    result = __GCONV_FULL_OUTPUT;				      \
 	    break;							      \

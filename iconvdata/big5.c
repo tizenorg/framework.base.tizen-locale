@@ -1,5 +1,5 @@
 /* Mapping tables for Big5 handling.
-   Copyright (C) 1997-1999, 2000-2002 Free Software Foundation, Inc.
+   Copyright (C) 1997-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Ulrich Drepper <drepper@cygnus.com>, 1997.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <dlfcn.h>
 #include <gconv.h>
@@ -8384,6 +8383,7 @@ static const char from_ucs4_tab15[][2] =
 #define MIN_NEEDED_FROM		1
 #define MAX_NEEDED_FROM		2
 #define MIN_NEEDED_TO		4
+#define ONE_DIRECTION		0
 
 
 /* First define the conversion function from Big5 to UCS4.  */
@@ -8402,7 +8402,7 @@ static const char from_ucs4_tab15[][2] =
 	uint32_t ch2;							      \
 	int idx;							      \
 									      \
-	if (__builtin_expect (inptr + 1 >= inend, 0))			      \
+	if (__glibc_unlikely (inptr + 1 >= inend))			      \
 	  {								      \
 	    /* The second character is not available.  */		      \
 	    result = __GCONV_INCOMPLETE_INPUT;				      \
@@ -8427,7 +8427,7 @@ static const char from_ucs4_tab15[][2] =
 	ch = big5_to_ucs[idx];						      \
 									      \
 	/* Is this character defined?  */				      \
-	if (__builtin_expect (ch == 0, 0))				      \
+	if (__glibc_unlikely (ch == 0))					      \
 	  {								      \
 	    /* This is an illegal character.  */			      \
 	    STANDARD_FROM_LOOP_ERR_HANDLER (2);				      \

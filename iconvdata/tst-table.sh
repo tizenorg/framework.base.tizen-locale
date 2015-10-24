@@ -1,5 +1,5 @@
 #!/bin/sh
-# Copyright (C) 2000, 2001, 2002 Free Software Foundation, Inc.
+# Copyright (C) 2000-2015 Free Software Foundation, Inc.
 # This file is part of the GNU C Library.
 # Contributed by Bruno Haible <haible@clisp.cons.org>, 2000.
 #
@@ -15,28 +15,26 @@
 # Lesser General Public License for more details.
 
 # You should have received a copy of the GNU Lesser General Public
-# License along with the GNU C Library; if not, write to the Free
-# Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-# 02111-1307 USA.
+# License along with the GNU C Library; if not, see
+# <http://www.gnu.org/licenses/>.
 
 # Checks that the iconv() implementation (in both directions) for a
 # stateless encoding agrees with the charmap table.
 
 common_objpfx=$1
 objpfx=$2
-cross_test_wrapper="$3"
+test_program_prefix=$3
 charset=$4
 charmap=$5
 
-GCONV_PATH=${common_objpfx}iconvdata
-export GCONV_PATH
+# sort is used on the build system.
 LC_ALL=C
 export LC_ALL
 
 set -e
 
 # Get the charmap.
-${SHELL} tst-table-charmap.sh ${charmap:-$charset} \
+./tst-table-charmap.sh ${charmap:-$charset} \
   < ../localedata/charmaps/${charmap:-$charset} \
   > ${objpfx}tst-${charset}.charmap.table
 # When the charset is GB18030, truncate this table because for this encoding,
@@ -61,12 +59,12 @@ else
 fi
 
 # iconv in one direction.
-${cross_test_wrapper} ${common_objpfx}elf/ld.so --library-path $common_objpfx \
+${test_program_prefix} \
 ${objpfx}tst-table-from ${charset} \
   > ${objpfx}tst-${charset}.table
 
 # iconv in the other direction.
-${cross_test_wrapper} ${common_objpfx}elf/ld.so --library-path $common_objpfx \
+${test_program_prefix} \
 ${objpfx}tst-table-to ${charset} | sort \
   > ${objpfx}tst-${charset}.inverse.table
 

@@ -1,5 +1,5 @@
 /* Test program for user-defined character maps.
-   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1999-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Contributed by Ulrich Drepper <drepper@cygnus.com>.
 
@@ -14,9 +14,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <locale.h>
 #include <stdio.h>
@@ -25,8 +24,8 @@
 #include <wchar.h>
 #include <wctype.h>
 
-int
-main (void)
+static int
+do_test (void)
 {
   char buf[30];
   wchar_t wbuf[30];
@@ -45,12 +44,12 @@ main (void)
     }
 
   wch = towctrans (L'A', t);
-  printf ("towctrans (L'A', t) = %c\n", wch);
+  printf ("towctrans (L'A', t) = %lc\n", wch);
   if (wch != L'B')
     errors = 1;
 
   wch = towctrans (L'B', t);
-  printf ("towctrans (L'B', t) = %c\n", wch);
+  printf ("towctrans (L'B', t) = %lc\n", wch);
   if (wch != L'C')
     errors = 1;
 
@@ -69,3 +68,6 @@ main (void)
 
   return errors;
 }
+
+#define TEST_FUNCTION do_test ()
+#include "../test-skeleton.c"

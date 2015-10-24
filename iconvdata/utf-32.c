@@ -1,5 +1,5 @@
 /* Conversion module for UTF-32.
-   Copyright (C) 1999, 2000-2002 Free Software Foundation, Inc.
+   Copyright (C) 1999-2015 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -13,9 +13,8 @@
    Lesser General Public License for more details.
 
    You should have received a copy of the GNU Lesser General Public
-   License along with the GNU C Library; if not, write to the Free
-   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-   02111-1307 USA.  */
+   License along with the GNU C Library; if not, see
+   <http://www.gnu.org/licenses/>.  */
 
 #include <byteswap.h>
 #include <dlfcn.h>
@@ -38,6 +37,7 @@
 #define DEFINE_FINI		0
 #define MIN_NEEDED_FROM		4
 #define MIN_NEEDED_TO		4
+#define ONE_DIRECTION		0
 #define FROM_DIRECTION		(dir == from_utf32)
 #define PREPARE_LOOP \
   enum direction dir = ((struct utf32_data *) step->__data)->dir;	      \
@@ -45,7 +45,7 @@
   int swap;								      \
   if (FROM_DIRECTION && var == UTF_32)					      \
     {									      \
-      if (data->__invocation_counter == 0)				      \
+      if (__glibc_unlikely (data->__invocation_counter == 0))		      \
 	{								      \
 	  /* We have to find out which byte order the file is encoded in.  */ \
 	  if (inptr + 4 > inend)					      \
@@ -57,7 +57,7 @@
 	    *inptrp = inptr += 4;					      \
 	  else if (get32u (inptr) == BOM_OE)				      \
 	    {								      \
-	      ((struct utf32_data *) step->__data)->swap = 1;		      \
+	      data->__flags |= __GCONV_SWAP;				      \
 	      *inptrp = inptr += 4;					      \
 	    }								      \
 	}								      \
@@ -66,13 +66,17 @@
 	   && data->__invocation_counter == 0)				      \
     {									      \
       /* Emit the Byte Order Mark.  */					      \
-      if (__builtin_expect (outbuf + 4 > outend, 0))			      \
+      if (__glibc_unlikely (outbuf + 4 > outend))			      \
 	return __GCONV_FULL_OUTPUT;					      \
 									      \
       put32u (outbuf, BOM);						      \
       outbuf += 4;							      \
     }									      \
-  swap = ((struct utf32_data *) step->__data)->swap;
+  else if (__builtin_expect (data->__invocation_counter == 0, 0)	      \
+	   && ((var == UTF_32LE && BYTE_ORDER == BIG_ENDIAN)		      \
+	       || (var == UTF_32BE && BYTE_ORDER == LITTLE_ENDIAN)))	      \
+    data->__flags |= __GCONV_SWAP;					      \
+  swap = data->__flags & __GCONV_SWAP;
 #define EXTRA_LOOP_ARGS		, var, swap
 
 
@@ -96,7 +100,6 @@ struct utf32_data
 {
   enum direction dir;
   enum variant var;
-  int swap;
 };
 
 
@@ -151,9 +154,6 @@ gconv_init (struct __gconv_step *step)
 	{
 	  new_data->dir = dir;
 	  new_data->var = var;
-	  new_data->swap = ((var == UTF_32LE && BYTE_ORDER == BIG_ENDIAN)
-			    || (var == UTF_32BE
-				&& BYTE_ORDER == LITTLE_ENDIAN));
 	  step->__data = new_data;
 
 	  if (dir == from_utf32)
@@ -197,11 +197,11 @@ gconv_end (struct __gconv_step *data)
   {									      \
     uint32_t c = get32 (inptr);						      \
 									      \
-    if (__builtin_expect (c >= 0x110000, 0))				      \
+    if (__glibc_unlikely (c >= 0x110000))				      \
       {									      \
 	STANDARD_TO_LOOP_ERR_HANDLER (4);				      \
       }									      \
-    else if (__builtin_expect (c >= 0xd800 && c < 0xe000, 0))		      \
+    else if (__glibc_unlikely (c >= 0xd800 && c < 0xe000))		      \
       {									      \
 	/* Surrogate characters in UCS-4 input are not valid.		      \
 	   We must catch this.  If we let surrogates pass through,	      \
@@ -216,9 +216,8 @@ gconv_end (struct __gconv_step *data)
       }									      \
 									      \
     if (swap)								      \
-      put32 (outptr, bswap_32 (c));					      \
-    else								      \
-      put32 (outptr, c);						      \
+      c = bswap_32 (c);							      \
+    put32 (outptr, c);							      \
 									      \
     outptr += 4;							      \
     inptr += 4;								      \
@@ -240,7 +239,7 @@ gconv_end (struct __gconv_step *data)
     if (swap)								      \
       u1 = bswap_32 (u1);						      \
 									      \
-    if (__builtin_expect (u1 >= 0x110000, 0))				      \
+    if (__glibc_unlikely (u1 >= 0x110000))				      \
       {									      \
 	/* This is illegal.  */						      \
 	STANDARD_FROM_LOOP_ERR_HANDLER (4);				      \
