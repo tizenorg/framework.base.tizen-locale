@@ -1,0 +1,990 @@
+From 4925a68e97025b56b4a7ad40b08c606d46019b36 Mon Sep 17 00:00:00 2001
+From: MyoungJune Park <mj2004.park@samsung.com>
+Date: Tue, 30 Jun 2015 19:34:07 +0900
+Subject: [PATCH] add Curdish locale
+
+---
+ localedata/SUPPORTED        |   2 +
+ localedata/locales/ckb_IQ   | 467 ++++++++++++++++++++++++++++++++++++++++++++
+ localedata/locales/ckb_IR   | 467 ++++++++++++++++++++++++++++++++++++++++++++
+ packaging/tizen-locale.spec |   3 +-
+ 4 files changed, 938 insertions(+), 1 deletion(-)
+ create mode 100644 localedata/locales/ckb_IQ
+ create mode 100644 localedata/locales/ckb_IR
+
+diff --git a/localedata/SUPPORTED b/localedata/SUPPORTED
+index 9bf2a4f..312f5ac 100644
+--- a/localedata/SUPPORTED
++++ b/localedata/SUPPORTED
+@@ -85,6 +85,8 @@ ca_FR/ISO-8859-15 \
+ ca_IT.UTF-8/UTF-8 \
+ ca_IT/ISO-8859-15 \
+ ce_RU/UTF-8 \
++ckb_IQ/UTF-8 \
++ckb_IR/UTF-8 \
+ cmn_TW/UTF-8 \
+ crh_UA/UTF-8 \
+ cs_CZ.UTF-8/UTF-8 \
+diff --git a/localedata/locales/ckb_IQ b/localedata/locales/ckb_IQ
+new file mode 100644
+index 0000000..35a8026
+--- /dev/null
++++ b/localedata/locales/ckb_IQ
+@@ -0,0 +1,467 @@
++comment_char %
++escape_char  /
++%
++%
++%%%%%%%%%%%%%%%% local Definition ku_ckb  | ckb_iq  | ckb_ir %%%%%%%%%%%%%%%%%%%%%%%
++% FOR ALL KURDISH DIALECTS USING ARABIC ALPHABETS
++% Kurdish language locale for Iraq and Iran (using arabic letters):
++% KU_CKB, KU_BA, KU_HO, KU_LU
++% Contributed by Aras Noori <aras.noori@gmail.com>
++% Filename: ckb_iq
++% Locale name: ckb_iq.UTF-8
++% Language: kurdish sorani
++% Language abbrivation: KU-AR(Kurdish - Arabic letters)
++% Charset: UTF-8
++% Creation Date: 2009-11-03
++% History:
++% January 2009: Defining CKB locale
++% March 2009: Adding rule for CKB
++% October 2009: bug fixing and redefine
++% April 2010 fixing "not found category" problems
++% March 2011 fixing all bugs
++% Sept 2014: fixing alphabet and unicode bugs
++% Oct 2014: fixing Address and fmt_name issues
++
++LC_IDENTIFICATION
++title      "Kurdish language locale based on Arabic letters"
++source     "Aras Noori"
++address    "see e-mail"
++contact    "Aras Noori"
++email      "aras.noori@gmail.com"
++tel        "+49 17629857380"
++fax        ""
++language   "Kurdish"
++territory  "Iraq, Iran"
++revision   "0.8"
++date   "2014-09-20"
++%
++category  "ckb_IQ:2000";LC_IDENTIFICATION
++category  "ckb_IQ:2000";LC_CTYPE
++category  "ckb_IQ:2000";LC_COLLATE
++category  "ckb_IQ:2000";LC_MONETARY
++category  "ckb_IQ:2000";LC_NUMERIC
++category  "ckb_IQ:2000";LC_TIME
++category  "ckb_IQ:2000";LC_MESSAGES
++category  "ckb_IQ:2000";LC_PAPER
++category  "ckb_IQ:2000";LC_NAME
++category  "ckb_IQ:2000";LC_ADDRESS
++category  "ckb_IQ:2000";LC_TELEPHONE
++category  "ckb_IQ:2000";LC_MEASUREMENT
++END LC_IDENTIFICATION
++
++LC_CTYPE
++copy "i18n"
++END LC_CTYPE
++
++LC_COLLATE
++% The Kurdish Sorani, Bahdini, and others dialects is mainly written using a modified (Arabic-based alphabet) with 33 letters. 
++% Unlike the regular Arabic alphabet, which is an abjad, kurdish is an alphabet in which vowels are mandatory, making the script easy to read.
++%
++% The kurdish alphabet order is: 
++% in Latin: a, b, c, ç, d, e, ê, f, g, h, i, î, j, k, l, ll, m, n, o, p, q, r, rr, s, sh, t, u, uu, v, w, x, y, z
++% vowels: A, E, I, O, U, UU
++%
++% Copy the template from ISO/IEC 14651
++
++order_start             forward; forward 
++% 
++% Kurdish numeric characters. 
++% 
++<U0660> <U0660> 
++<U0661> <U0661> 
++<U0662> <U0662> 
++<U0663> <U0663> 
++<U0664> <U0664> 
++<U0665> <U0665> 
++<U0666> <U0666> 
++<U0667> <U0667> 
++<U0668> <U0668> 
++<U0669> <U0669> 
++
++% 
++% Characters from space to / and from : to ~ and nbsp. 
++% 
++<U0020> <U0020> 
++<U0021> <U0021> 
++<U0022> <U0022> 
++<U0023> <U0023> 
++<U0024> <U0024> 
++<U0025> <U0025> 
++<U0026> <U0026> 
++<U0027> <U0027> 
++<U0028> <U0028> 
++<U0029> <U0029> 
++<U002A> <U002A> 
++<U002B> <U002B> 
++<U002C> <U002C> 
++<U002D> <U002D> 
++<U002E> <U002E> 
++<U002F> <U002F> 
++<U003A> <U003A> 
++<U003B> <U003B> 
++<U003C> <U003C> 
++<U003D> <U003D> 
++<U003E> <U003E> 
++<U003F> <U003F> 
++<U0040> <U0040> 
++<U005B> <U005B> 
++<U005C> <U005C> 
++<U005D> <U005D> 
++<U005E> <U005E> 
++<U005F> <U005F> 
++<U0060> <U0060> 
++<U007B> <U007B> 
++<U007C> <U007C> 
++<U007D> <U007D> 
++<U007E> <U007E> 
++<U00A0> <U00A0> 
++% 
++% Kurish alphabet order.
++%
++<U0626> <U0626>
++<U0627> <U0627>
++<U0628>	<U0628>
++<U067E> <U067E>
++<U062A> <U062A>
++<U062C> <U062C>
++<U0686> <U0686>
++<U062D> <U062D>
++<U062E> <U062E>
++<U062F> <U062F>
++<U0631> <U0631>
++<U0695> <U0695>
++<U0632> <U0632>
++<U0698> <U0698>
++<U0633> <U0633>
++<U0634> <U0634>
++<U0639> <U0639>
++<U063A> <U063A>
++<U0641> <U0641>
++<U06A4> <U06A4>
++<U0642> <U0642>
++<U06A9> <U06A9> 
++<U06AF> <U06AF>
++<U0644> <U0644>
++<U06B5> <U06B5>
++<U0645> <U0645>
++<U0646> <U0646>
++<U0648> <U0648>
++<U06C6> <U06C6>
++<U0647> <U0647>
++<U06D5> <U06D5>
++<U06CC> <U06CC>
++<U06CE> <U06CE>
++
++%
++%
++% English numeric characters.
++%
++<U0030>	<U0030>
++<U0031>	<U0031>
++<U0032>	<U0032>
++<U0033>	<U0033>
++<U0034>	<U0034>
++<U0035>	<U0035>
++<U0036>	<U0036>
++<U0037>	<U0037>
++<U0038>	<U0038>
++<U0039>	<U0039>
++%
++%
++% English alphabet.
++%
++<U0041>	<U0041>;<U0041>
++<U0061>	<U0041>;<U0061>
++<U0042>	<U0042>;<U0042>
++<U0062>	<U0042>;<U0062>
++<U0043>	<U0043>;<U0043>
++<U0063>	<U0043>;<U0063>
++<U0044>	<U0044>;<U0044>
++<U0064>	<U0044>;<U0064>
++<U0045>	<U0045>;<U0045>
++<U0065>	<U0045>;<U0065>
++<U0046>	<U0046>;<U0046>
++<U0066>	<U0046>;<U0066>
++<U0047>	<U0047>;<U0047>
++<U0067>	<U0047>;<U0067>
++<U0048>	<U0048>;<U0048>
++<U0068>	<U0048>;<U0068>
++<U0049>	<U0049>;<U0049>
++<U0069>	<U0049>;<U0069>
++<U004A>	<U004A>;<U004A>
++<U006A>	<U004A>;<U006A>
++<U004B>	<U004B>;<U004B>
++<U006B>	<U004B>;<U006B>
++<U004C>	<U004C>;<U004C>
++<U006C>	<U004C>;<U006C>
++<U004D>	<U004D>;<U004D>
++<U006D>	<U004D>;<U006D>
++<U004E>	<U004E>;<U004E>
++<U006E>	<U004E>;<U006E>
++<U004F>	<U004F>;<U004F>
++<U006F>	<U004F>;<U006F>
++<U0050>	<U0050>;<U0050>
++<U0070>	<U0050>;<U0070>
++<U0051>	<U0051>;<U0051>
++<U0071>	<U0051>;<U0071>
++<U0052>	<U0052>;<U0052>
++<U0072>	<U0052>;<U0072>
++<U0053>	<U0053>;<U0053>
++<U0073>	<U0053>;<U0073>
++<U0054>	<U0054>;<U0054>
++<U0074>	<U0054>;<U0074>
++<U0055>	<U0055>;<U0055>
++<U0075>	<U0055>;<U0075>
++<U0056>	<U0056>;<U0056>
++<U0076>	<U0056>;<U0076>
++<U0057>	<U0057>;<U0057>
++<U0077>	<U0057>;<U0077>
++<U0058>	<U0058>;<U0058>
++<U0078>	<U0058>;<U0078>
++<U0059>	<U0059>;<U0059>
++<U0079>	<U0059>;<U0079>
++<U005A>	<U005A>;<U005A>
++<U007A>	<U005A>;<U007A>
++%
++%
++% Other control characters etc. upto order_end
++%
++<U0000>	<U0000>
++<U0001>	<U0001>
++<U0002>	<U0002>
++<U0003>	<U0003>
++<U0004>	<U0004>
++<U0005>	<U0005>
++<U0006>	<U0006>
++<U0007>	<U0007>
++<U0008>	<U0008>
++<U0009>	<U0009>
++<U000A>	<U000A>
++<U000B>	<U000B>
++<U000C>	<U000C>
++<U000D>	<U000D>
++<U000E>	<U000E>
++<U000F>	<U000F>
++<U0010>	<U0010>
++<U0011>	<U0011>
++<U0012>	<U0012>
++<U0013>	<U0013>
++<U0014>	<U0014>
++<U0015>	<U0015>
++<U0016>	<U0016>
++<U0017>	<U0017>
++<U0018>	<U0018>
++<U0019>	<U0019>
++<U001A>	<U001A>
++<U001B>	<U001B>
++<U001C>	<U001C>
++<U001D>	<U001D>
++<U001E>	<U001E>
++<U001F>	<U001F>
++
++<U0080>	<U0080>
++<U0081>	<U0081>
++<U0082>	<U0082>
++<U0083>	<U0083>
++<U0084>	<U0084>
++<U0085>	<U0085>
++<U0086>	<U0086>
++<U0087>	<U0087>
++<U0088>	<U0088>
++<U0089>	<U0089>
++<U008A>	<U008A>
++<U008B>	<U008B>
++<U008C>	<U008C>
++<U008D>	<U008D>
++<U008E>	<U008E>
++<U008F>	<U008F>
++<U0090>	<U0090>
++<U0091>	<U0091>
++<U0092>	<U0092>
++<U0093>	<U0093>
++<U0094>	<U0094>
++<U0095>	<U0095>
++<U0096>	<U0096>
++<U0097>	<U0097>
++<U0098>	<U0098>
++<U0099>	<U0099>
++<U009A>	<U009A>
++<U009B>	<U009B>
++<U009C>	<U009C>
++<U009D>	<U009D>
++<U009E>	<U009E>
++<U009F>	<U009F>
++<U007F>	<U007F>
++<U0640>	IGNORE  
++order_end 
++
++END LC_COLLATE
++
++LC_MONETARY
++int_curr_symbol       "<U0049><U0051><U0044><U0020>"
++currency_symbol       "<U062F><U002E><U0639><U002E>"
++mon_decimal_point     "<U002E>"
++mon_thousands_sep     "<U002C>"
++mon_grouping	      3
++positive_sign	      ""
++negative_sign	      "<U002D>"
++int_frac_digits       3
++frac_digits	          3
++p_cs_precedes	      1
++p_sep_by_space	      1
++n_cs_precedes	      1
++n_sep_by_space	      1
++p_sign_posn	          1
++n_sign_posn	          2
++
++END LC_MONETARY
++
++
++LC_NUMERIC
++% This is the POSIX Locale definition for the LC_NUMERIC  category.
++decimal_point	       "<U002E>"
++thousands_sep	       "<U002C>"
++grouping	       3
++END LC_NUMERIC
++
++
++LC_TIME
++% This is the POSIX Locale definition for the LC_TIME category.
++% These are generated based on XML base Locale difintion file
++%
++% Abbreviated weekday names
++abday	"<U06CC><U06D5><U0626><U0634>";/
++		"<U062F><U0648><U0648><U0634>";/
++	    "<U0633><U0626><U0634>";/
++		"<U0686><U0648><U0631><U0634>";/
++	    "<U067E><U0626><U0634>";/
++		"<U0647><U0647>";/
++	    "<U0634><U06D5><U0645>"	
++%
++% Full weekday names 
++day	    "<U06CC><U06D5><U0643><U0634><U06D5><U0645><U0645><U06D5>";/
++		"<U062F><U0648><U0648><U0634><U06D5><U0645><U0645><U06D5>";/
++		"<U0633><U06CE><U0634><U06D5><U0645><U0645><U06D5>";/
++		"<U0686><U0648><U0624><U0631><U0634><U06D5><U0645><U0645><U06D5>";/
++		"<U067E><U06CE><U0646><U062C><U0634><U06D5><U0645><U0645><U06D5>";/
++		"<U0647><U06D5><U06CC><U0646><U06CC>";/
++		"<U0634><U06D5><U0645><U0645><U06D5>"
++%
++% Abbreviated month names
++abmon	    "<U064A><U0646><U0627>";/
++			"<U0641><U0628><U0631>";/
++			"<U0645><U0627><U0631>";/
++			"<U0623><U0628><U0631>";/
++			"<U0645><U0627><U064A>";/
++			"<U064A><U0648><U0646>";/
++			"<U064A><U0648><U0644>";/
++			"<U0623><U063A><U0633>";/
++			"<U0633><U0628><U062A>";/
++			"<U0623><U0643><U062A>";/
++			"<U0646><U0648><U0641>";/
++			"<U062F><U064A><U0633>"
++%
++% Full month names
++mon 	"<U064A><U0646><U0627><U064A><U0631>";/
++		"<U0641><U0628><U0631><U0627><U064A><U0631>";/
++	    "<U0645><U0627><U0631><U0633>";/
++	    "<U0623><U0628><U0631><U064A><U0644>";/
++	    "<U0645><U0627><U064A><U0648>";/
++	    "<U064A><U0648><U0646><U064A><U0648>";/
++	    "<U064A><U0648><U0644><U064A><U0648>";/
++	    "<U0623><U063A><U0633><U0637><U0633>";/
++		"<U0633><U0628><U062A><U0645><U0628><U0631>";/
++		"<U0623><U0643><U062A><U0648><U0628><U0631>";/
++		"<U0646><U0648><U0641><U0645><U0628><U0631>";/
++		"<U062F><U064A><U0633><U0645><U0628><U0631>"
++%
++% Equivalent of AM PM
++am_pm	    "<U067E><U0646>";"<U062F><U0646>"
++%
++% Appropriate date and time representation
++d_t_fmt     "<U0025><U0064><U0020><U0025><U0062><U002C><U0020><U0025>/
++<U0059><U0020><U0025><U005A><U0020><U0025><U0049><U003A><U0025><U004D>/
++<U003A><U0025><U0053><U0020><U0025><U0070>"
++%
++% Appropriate date representation(%x)
++%       "%Oy/%Om/%Od"
++d_fmt	 "<U0025><U0064><U0020><U0025><U0062><U002C><U0020><U0025><U0059>"
++%
++% Appropriate time representation
++% 
++t_fmt	 "<U0025><U005A><U0020><U0025><U0049><U003A>/
++<U0025><U004D><U003A><U0025><U0053><U0020>"
++%
++% Appropriate 12 h time representation
++t_fmt_ampm  "<U0025><U005A><U0020><U0025><U0049><U003A>/
++<U0025><U004D><U003A><U0025><U0053><U0020><U0025><U0070>"
++%
++% Appropriate date representation 
++date_fmt	"<U0025><U0061><U0020><U0025><U0062><U0020><U0025><U0065>/
++<U0020><U0025><U0048><U003A><U0025>/
++<U004D><U003A><U0025><U0053><U0020>/
++<U0025><U005A><U0020><U0025><U0059>"
++
++%  FIXME: found in CLDR
++first_weekday 7
++first_workday	7
++cal_direction	3
++END LC_TIME
++
++
++LC_MESSAGES
++yesexpr  "<U0628><U06D5><U06B5><U06CE>"
++noexpr   "<U0646><U06D5><U062E><U06CE><U0631>"
++END LC_MESSAGES
++
++
++LC_PAPER
++% This is the ISO_IEC TR14652 Locale definition for the
++height	    297
++width	    210
++END LC_PAPER
++
++
++LC_NAME
++% This is the ISO_IEC TR14652 Locale definition for the
++% LC_NAME category.
++%
++name_fmt    "<U0025><U0070><U0025><U0074><U0025><U0066><U0025><U0074>/
++<U0025><U0067>"
++name_gen    "<U002D><U0073><U0061><U006E>"
++name_miss   "<U062E><U0627><U062A><U0648>"
++name_ms     "<U062E><U0627><U062A><U0648>"
++name_mrs    "<U062E><U0627><U062A><U0648>"
++name_mr     "<U0643><U0627><U0643>"
++END LC_NAME
++%
++LC_ADDRESS
++% This is the ISO_IEC TR14652 Locale definition for the
++postal_fmt  "<U0025><U007A><U0025><U0063><U0025><U0054><U0025><U0073>/
++<U0025><U0062><U0025><U0065><U0025><U0072>"
++country_ab2 "<U0049><U0051>"
++country_ab3 "<U0049><U0052><U0051>"
++country_post "<U0049><U0052><U0051>"
++country_num 368
++country_car "<U0049><U0051>"
++%
++END LC_ADDRESS
++
++
++LC_TELEPHONE
++%
++tel_int_fmt "<U002B><U0025><U0063><U0020><U003B><U0025><U0061><U0020>/
++<U003B><U0025><U006C>"
++tel_dom_fmt    "<U202A><U0025><U0041><U2012><U0025><U006C><U202C>"
++int_select     "<U0030><U0030>"
++int_prefix  "<U0039><U0036><U0034>"
++
++END LC_TELEPHONE
++
++
++LC_MEASUREMENT
++% This is the ISO_IEC TR14652  Locale definition
++%
++measurement 1
++
++END LC_MEASUREMENT
+diff --git a/localedata/locales/ckb_IR b/localedata/locales/ckb_IR
+new file mode 100644
+index 0000000..94cf34a
+--- /dev/null
++++ b/localedata/locales/ckb_IR
+@@ -0,0 +1,467 @@
++comment_char %
++escape_char  /
++%
++%
++%%%%%%%%%%%%%%%% local Definition ku_ckb  | ckb_iq  | ckb_ir %%%%%%%%%%%%%%%%%%%%%%%
++% FOR ALL KURDISH DIALECTS USING ARABIC ALPHABETS
++% Kurdish language locale for Iraq and Iran (using arabic letters):
++% KU_CKB, KU_BA, KU_HO, KU_LU
++% Contributed by Aras Noori <aras.noori@gmail.com>
++% Filename: ckb_ir
++% Locale name: ckb_ir.UTF-8
++% Language: kurdish sorani
++% Language abbrivation: KU-AR(Kurdish - Arabic letters)
++% Charset: UTF-8
++% Creation Date: 2009-11-03
++% History:
++% January 2009: Defining CKB locale
++% March 2009: Adding rule for CKB
++% October 2009: bug fixing and redefine
++% April 2010 fixing "not found category" problems
++% March 2011 fixing all bugs
++% Sept 2014: fixing alphabet and unicode bugs
++% Oct 2014: fixing Address and fmt_name issues
++
++LC_IDENTIFICATION
++title      "Kurdish language locale based on Arabic letters"
++source     "Aras Noori"
++address    "see e-mail"
++contact    "Aras Noori"
++email      "aras.noori@gmail.com"
++tel        "+49 17629857380"
++fax        ""
++language   "Kurdish"
++territory  "Iraq, Iran"
++revision   "0.8"
++date       "2014-09-20"
++%
++category  "ckb_IQ:2000";LC_IDENTIFICATION
++category  "ckb_IQ:2000";LC_CTYPE
++category  "ckb_IQ:2000";LC_COLLATE
++category  "ckb_IQ:2000";LC_MONETARY
++category  "ckb_IQ:2000";LC_NUMERIC
++category  "ckb_IQ:2000";LC_TIME
++category  "ckb_IQ:2000";LC_MESSAGES
++category  "ckb_IQ:2000";LC_PAPER
++category  "ckb_IQ:2000";LC_NAME
++category  "ckb_IQ:2000";LC_ADDRESS
++category  "ckb_IQ:2000";LC_TELEPHONE
++category  "ckb_IQ:2000";LC_MEASUREMENT
++END LC_IDENTIFICATION
++
++LC_CTYPE
++copy "i18n"
++END LC_CTYPE
++
++LC_COLLATE
++% The Kurdish Sorani, Bahdini, and others dialects is mainly written using a modified (Arabic-based alphabet) with 33 letters. 
++% Unlike the regular Arabic alphabet, which is an abjad, kurdish is an alphabet in which vowels are mandatory, making the script easy to read.
++%
++% The kurdish alphabet order is: 
++% in Latin: a, b, c, ç, d, e, ê, f, g, h, i, î, j, k, l, ll, m, n, o, p, q, r, rr, s, sh, t, u, uu, v, w, x, y, z
++% vowels: A, E, I, O, U, UU
++%
++% Copy the template from ISO/IEC 14651
++
++order_start             forward; forward 
++% 
++% Kurdish numeric characters. 
++% 
++<U0660> <U0660> 
++<U0661> <U0661> 
++<U0662> <U0662> 
++<U0663> <U0663> 
++<U0664> <U0664> 
++<U0665> <U0665> 
++<U0666> <U0666> 
++<U0667> <U0667> 
++<U0668> <U0668> 
++<U0669> <U0669> 
++
++% 
++% Characters from space to / and from : to ~ and nbsp. 
++% 
++<U0020> <U0020> 
++<U0021> <U0021> 
++<U0022> <U0022> 
++<U0023> <U0023> 
++<U0024> <U0024> 
++<U0025> <U0025> 
++<U0026> <U0026> 
++<U0027> <U0027> 
++<U0028> <U0028> 
++<U0029> <U0029> 
++<U002A> <U002A> 
++<U002B> <U002B> 
++<U002C> <U002C> 
++<U002D> <U002D> 
++<U002E> <U002E> 
++<U002F> <U002F> 
++<U003A> <U003A> 
++<U003B> <U003B> 
++<U003C> <U003C> 
++<U003D> <U003D> 
++<U003E> <U003E> 
++<U003F> <U003F> 
++<U0040> <U0040> 
++<U005B> <U005B> 
++<U005C> <U005C> 
++<U005D> <U005D> 
++<U005E> <U005E> 
++<U005F> <U005F> 
++<U0060> <U0060> 
++<U007B> <U007B> 
++<U007C> <U007C> 
++<U007D> <U007D> 
++<U007E> <U007E> 
++<U00A0> <U00A0> 
++% 
++% Kurish alphabet order.
++%
++<U0626> <U0626>
++<U0627> <U0627>
++<U0628>	<U0628>
++<U067E> <U067E>
++<U062A> <U062A>
++<U062C> <U062C>
++<U0686> <U0686>
++<U062D> <U062D>
++<U062E> <U062E>
++<U062F> <U062F>
++<U0631> <U0631>
++<U0695> <U0695>
++<U0632> <U0632>
++<U0698> <U0698>
++<U0633> <U0633>
++<U0634> <U0634>
++<U0639> <U0639>
++<U063A> <U063A>
++<U0641> <U0641>
++<U06A4> <U06A4>
++<U0642> <U0642>
++<U06A9> <U06A9> 
++<U06AF> <U06AF>
++<U0644> <U0644>
++<U06B5> <U06B5>
++<U0645> <U0645>
++<U0646> <U0646>
++<U0648> <U0648>
++<U06C6> <U06C6>
++<U0647> <U0647>
++<U06D5> <U06D5>
++<U06CC> <U06CC>
++<U06CE> <U06CE>
++
++%
++%
++% English numeric characters.
++%
++<U0030>	<U0030>
++<U0031>	<U0031>
++<U0032>	<U0032>
++<U0033>	<U0033>
++<U0034>	<U0034>
++<U0035>	<U0035>
++<U0036>	<U0036>
++<U0037>	<U0037>
++<U0038>	<U0038>
++<U0039>	<U0039>
++%
++%
++% English alphabet.
++%
++<U0041>	<U0041>;<U0041>
++<U0061>	<U0041>;<U0061>
++<U0042>	<U0042>;<U0042>
++<U0062>	<U0042>;<U0062>
++<U0043>	<U0043>;<U0043>
++<U0063>	<U0043>;<U0063>
++<U0044>	<U0044>;<U0044>
++<U0064>	<U0044>;<U0064>
++<U0045>	<U0045>;<U0045>
++<U0065>	<U0045>;<U0065>
++<U0046>	<U0046>;<U0046>
++<U0066>	<U0046>;<U0066>
++<U0047>	<U0047>;<U0047>
++<U0067>	<U0047>;<U0067>
++<U0048>	<U0048>;<U0048>
++<U0068>	<U0048>;<U0068>
++<U0049>	<U0049>;<U0049>
++<U0069>	<U0049>;<U0069>
++<U004A>	<U004A>;<U004A>
++<U006A>	<U004A>;<U006A>
++<U004B>	<U004B>;<U004B>
++<U006B>	<U004B>;<U006B>
++<U004C>	<U004C>;<U004C>
++<U006C>	<U004C>;<U006C>
++<U004D>	<U004D>;<U004D>
++<U006D>	<U004D>;<U006D>
++<U004E>	<U004E>;<U004E>
++<U006E>	<U004E>;<U006E>
++<U004F>	<U004F>;<U004F>
++<U006F>	<U004F>;<U006F>
++<U0050>	<U0050>;<U0050>
++<U0070>	<U0050>;<U0070>
++<U0051>	<U0051>;<U0051>
++<U0071>	<U0051>;<U0071>
++<U0052>	<U0052>;<U0052>
++<U0072>	<U0052>;<U0072>
++<U0053>	<U0053>;<U0053>
++<U0073>	<U0053>;<U0073>
++<U0054>	<U0054>;<U0054>
++<U0074>	<U0054>;<U0074>
++<U0055>	<U0055>;<U0055>
++<U0075>	<U0055>;<U0075>
++<U0056>	<U0056>;<U0056>
++<U0076>	<U0056>;<U0076>
++<U0057>	<U0057>;<U0057>
++<U0077>	<U0057>;<U0077>
++<U0058>	<U0058>;<U0058>
++<U0078>	<U0058>;<U0078>
++<U0059>	<U0059>;<U0059>
++<U0079>	<U0059>;<U0079>
++<U005A>	<U005A>;<U005A>
++<U007A>	<U005A>;<U007A>
++%
++%
++% Other control characters etc. upto order_end
++%
++<U0000>	<U0000>
++<U0001>	<U0001>
++<U0002>	<U0002>
++<U0003>	<U0003>
++<U0004>	<U0004>
++<U0005>	<U0005>
++<U0006>	<U0006>
++<U0007>	<U0007>
++<U0008>	<U0008>
++<U0009>	<U0009>
++<U000A>	<U000A>
++<U000B>	<U000B>
++<U000C>	<U000C>
++<U000D>	<U000D>
++<U000E>	<U000E>
++<U000F>	<U000F>
++<U0010>	<U0010>
++<U0011>	<U0011>
++<U0012>	<U0012>
++<U0013>	<U0013>
++<U0014>	<U0014>
++<U0015>	<U0015>
++<U0016>	<U0016>
++<U0017>	<U0017>
++<U0018>	<U0018>
++<U0019>	<U0019>
++<U001A>	<U001A>
++<U001B>	<U001B>
++<U001C>	<U001C>
++<U001D>	<U001D>
++<U001E>	<U001E>
++<U001F>	<U001F>
++
++<U0080>	<U0080>
++<U0081>	<U0081>
++<U0082>	<U0082>
++<U0083>	<U0083>
++<U0084>	<U0084>
++<U0085>	<U0085>
++<U0086>	<U0086>
++<U0087>	<U0087>
++<U0088>	<U0088>
++<U0089>	<U0089>
++<U008A>	<U008A>
++<U008B>	<U008B>
++<U008C>	<U008C>
++<U008D>	<U008D>
++<U008E>	<U008E>
++<U008F>	<U008F>
++<U0090>	<U0090>
++<U0091>	<U0091>
++<U0092>	<U0092>
++<U0093>	<U0093>
++<U0094>	<U0094>
++<U0095>	<U0095>
++<U0096>	<U0096>
++<U0097>	<U0097>
++<U0098>	<U0098>
++<U0099>	<U0099>
++<U009A>	<U009A>
++<U009B>	<U009B>
++<U009C>	<U009C>
++<U009D>	<U009D>
++<U009E>	<U009E>
++<U009F>	<U009F>
++<U007F>	<U007F>
++<U0640>	IGNORE  
++order_end 
++
++END LC_COLLATE
++
++LC_MONETARY
++int_curr_symbol       "<U0049><U0051><U0044><U0020>"
++currency_symbol       "<U062F><U002E><U0639><U002E>"
++mon_decimal_point     "<U002E>"
++mon_thousands_sep     "<U002C>"
++mon_grouping	      3
++positive_sign	      ""
++negative_sign	      "<U002D>"
++int_frac_digits       3
++frac_digits	          3
++p_cs_precedes	      1
++p_sep_by_space	      1
++n_cs_precedes	      1
++n_sep_by_space	      1
++p_sign_posn	          1
++n_sign_posn	          2
++
++END LC_MONETARY
++
++
++LC_NUMERIC
++% This is the POSIX Locale definition for the LC_NUMERIC  category.
++decimal_point	       "<U002E>"
++thousands_sep	       "<U002C>"
++grouping	       3
++END LC_NUMERIC
++
++
++LC_TIME
++% This is the POSIX Locale definition for the LC_TIME category.
++% These are generated based on XML base Locale difintion file
++%
++% Abbreviated weekday names
++abday	"<U06CC><U06D5><U0626><U0634>";/
++		"<U062F><U0648><U0648><U0634>";/
++	    "<U0633><U0626><U0634>";/
++		"<U0686><U0648><U0631><U0634>";/
++	    "<U067E><U0626><U0634>";/
++		"<U0647><U0647>";/
++	    "<U0634><U06D5><U0645>"	
++%
++% Full weekday names 
++day	    "<U06CC><U06D5><U0643><U0634><U06D5><U0645><U0645><U06D5>";/
++		"<U062F><U0648><U0648><U0634><U06D5><U0645><U0645><U06D5>";/
++		"<U0633><U06CE><U0634><U06D5><U0645><U0645><U06D5>";/
++		"<U0686><U0648><U0624><U0631><U0634><U06D5><U0645><U0645><U06D5>";/
++		"<U067E><U06CE><U0646><U062C><U0634><U06D5><U0645><U0645><U06D5>";/
++		"<U0647><U06D5><U06CC><U0646><U06CC>";/
++		"<U0634><U06D5><U0645><U0645><U06D5>"
++%
++% Abbreviated month names
++abmon	    "<U064A><U0646><U0627>";/
++			"<U0641><U0628><U0631>";/
++			"<U0645><U0627><U0631>";/
++			"<U0623><U0628><U0631>";/
++			"<U0645><U0627><U064A>";/
++			"<U064A><U0648><U0646>";/
++			"<U064A><U0648><U0644>";/
++			"<U0623><U063A><U0633>";/
++			"<U0633><U0628><U062A>";/
++			"<U0623><U0643><U062A>";/
++			"<U0646><U0648><U0641>";/
++			"<U062F><U064A><U0633>"
++%
++% Full month names
++mon 	"<U064A><U0646><U0627><U064A><U0631>";/
++		"<U0641><U0628><U0631><U0627><U064A><U0631>";/
++	    "<U0645><U0627><U0631><U0633>";/
++	    "<U0623><U0628><U0631><U064A><U0644>";/
++	    "<U0645><U0627><U064A><U0648>";/
++	    "<U064A><U0648><U0646><U064A><U0648>";/
++	    "<U064A><U0648><U0644><U064A><U0648>";/
++	    "<U0623><U063A><U0633><U0637><U0633>";/
++		"<U0633><U0628><U062A><U0645><U0628><U0631>";/
++		"<U0623><U0643><U062A><U0648><U0628><U0631>";/
++		"<U0646><U0648><U0641><U0645><U0628><U0631>";/
++		"<U062F><U064A><U0633><U0645><U0628><U0631>"
++%
++% Equivalent of AM PM
++am_pm	    "<U067E><U0646>";"<U062F><U0646>"
++%
++% Appropriate date and time representation
++d_t_fmt     "<U0025><U0064><U0020><U0025><U0062><U002C><U0020><U0025>/
++<U0059><U0020><U0025><U005A><U0020><U0025><U0049><U003A><U0025><U004D>/
++<U003A><U0025><U0053><U0020><U0025><U0070>"
++%
++% Appropriate date representation(%x)
++%       "%Oy/%Om/%Od"
++d_fmt	 "<U0025><U0064><U0020><U0025><U0062><U002C><U0020><U0025><U0059>"
++%
++% Appropriate time representation
++% 
++t_fmt	 "<U0025><U005A><U0020><U0025><U0049><U003A>/
++<U0025><U004D><U003A><U0025><U0053><U0020>"
++%
++% Appropriate 12 h time representation
++t_fmt_ampm  "<U0025><U005A><U0020><U0025><U0049><U003A>/
++<U0025><U004D><U003A><U0025><U0053><U0020><U0025><U0070>"
++%
++% Appropriate date representation 
++date_fmt	"<U0025><U0061><U0020><U0025><U0062><U0020><U0025><U0065>/
++<U0020><U0025><U0048><U003A><U0025>/
++<U004D><U003A><U0025><U0053><U0020>/
++<U0025><U005A><U0020><U0025><U0059>"
++
++%  FIXME: found in CLDR
++first_weekday 7
++first_workday	7
++cal_direction	3
++END LC_TIME
++
++
++LC_MESSAGES
++yesexpr  "<U0628><U06D5><U06B5><U06CE>"
++noexpr   "<U0646><U06D5><U062E><U06CE><U0631>"
++END LC_MESSAGES
++
++
++LC_PAPER
++% This is the ISO_IEC TR14652 Locale definition for the
++height	    297
++width	    210
++END LC_PAPER
++
++
++LC_NAME
++% This is the ISO_IEC TR14652 Locale definition for the
++% LC_NAME category.
++%
++name_fmt    "<U0025><U0070><U0025><U0074><U0025><U0066><U0025><U0074>/
++<U0025><U0067>"
++name_gen    "<U002D><U0073><U0061><U006E>"
++name_miss   "<U062E><U0627><U062A><U0648>"
++name_ms     "<U062E><U0627><U062A><U0648>"
++name_mrs    "<U062E><U0627><U062A><U0648>"
++name_mr     "<U0643><U0627><U0643>"
++END LC_NAME
++%
++LC_ADDRESS
++% This is the ISO_IEC TR14652 Locale definition for the
++postal_fmt  "<U0025><U007A><U0025><U0063><U0025><U0054><U0025><U0073>/
++<U0025><U0062><U0025><U0065><U0025><U0072>"
++country_ab2 "<U0049><U0051>"
++country_ab3 "<U0049><U0052><U0051>"
++country_post "<U0049><U0052><U0051>"
++country_num 368
++country_car "<U0049><U0051>"
++%
++END LC_ADDRESS
++
++
++LC_TELEPHONE
++%
++tel_int_fmt "<U002B><U0025><U0063><U0020><U003B><U0025><U0061><U0020>/
++<U003B><U0025><U006C>"
++tel_dom_fmt    "<U202A><U0025><U0041><U2012><U0025><U006C><U202C>"
++int_select     "<U0030><U0030>"
++int_prefix  "<U0039><U0036><U0034>"
++
++END LC_TELEPHONE
++
++
++LC_MEASUREMENT
++% This is the ISO_IEC TR14652  Locale definition
++%
++measurement 1
++
++END LC_MEASUREMENT
+diff --git a/packaging/tizen-locale.spec b/packaging/tizen-locale.spec
+index c355639..4c56838 100644
+--- a/packaging/tizen-locale.spec
++++ b/packaging/tizen-locale.spec
+@@ -44,7 +44,8 @@ CHARSET=UTF-8
+ LOCALE_DIR=%{buildroot}/usr/lib/locale
+ mkdir -p $LOCALE_DIR
+ 
+-REGEX="(aa_DJ|aa_ER|aa_ET|af_ZA|am_ET|an_ES|ar_AE|ar_BH|ar_DZ|ar_EG|ar_IN|ar_IQ|ar_JO|ar_KW|ar_LB|ar_LY|ar_MA|ar_OM|ar_QA|ar_SA|ar_SD|ar_SY|ar_TN|ar_YE|as_IN|ast_ES|az_AZ|be_BY|ber_DZ|ber_MA|bg_BG|bn_BD|bn_IN|bo_CN|bo_IN|br_FR|bs_BA|byn_ER|ca_AD|ca_ES|ca_FR|ca_IT|crh_UA|csb_PL|cs_CZ|cv_RU|cy_GB|da_DK|de_AT|de_BE|de_CH|de_DE|de_LU|dv_MV|dz_BT|el_CY|el_GR|en_AG|en_AU|en_BW|en_CA|en_DK|en_GB|en_HK|en_IE|en_IN|en_NG|en_NZ|en_PH|en_SG|en_US|en_ZA|en_ZW|es_AR|es_BO|es_CL|es_CO|es_CR|es_DO|es_EC|es_ES|es_GT|es_HN|es_MX|es_NI|es_PA|es_PE|es_PR|es_PY|es_SV|es_US|es_UY|es_VE|et_EE|eu_ES|fa_IR|fi_FI|fil_PH|fo_FO|fr_BE|fr_CA|fr_CH|fr_FR|fr_LU|fur_IT|fy_DE|fy_NL|ga_IE|gd_GB|gez_ER|gez_ET|gl_ES|gu_IN|gv_GB|ha_NG|he_IL|hi_IN|hne_IN|hr_HR|hsb_DE|ht_HT|hu_HU|hy_AM|i18n|id_ID|ig_NG|ik_CA|is_IS|it_CH|it_IT|iu_CA|iw_IL|ja_JP|ka_GE|kk_KZ|kl_GL|km_KH|kn_IN|kok_IN|ko_KR|ks_IN|ku_TR|kw_GB|ky_KG|lg_UG|li_BE|li_NL|lo_LA|lt_LT|lv_LV|mai_IN|mg_MG|mi_NZ|mk_MK|ml_IN|mn_MN|mr_IN|ms_MY|mt_MT|my_MM|nb_NO|nds_DE|nds_NL|ne_NP|nl_AW|nl_BE|nl_NL|nn_NO|nr_ZA|nso_ZA|oc_FR|om_ET|om_KE|or_IN|pa_IN|pap_AN|pa_PK|pl_PL|POSIX|ps_AF|pt_BR|pt_PT|ro_RO|ru_RU|ru_UA|rw_RW|sa_IN|sc_IT|sd_IN|se_NO|shs_CA|sid_ET|si_LK|sk_SK|sl_SI|so_DJ|so_ET|so_KE|so_SO|sq_AL|sq_MK|sr_ME|sr_RS|ss_ZA|st_ZA|sv_FI|sv_SE|ta_IN|te_IN|tg_TJ|th_TH|ti_ER|ti_ET|tig_ER|tk_TM|tl_PH|tn_ZA|tr_CY|tr_TR|ts_ZA|tt_RU|ug_CN|uk_UA|ur_IN|ur_PK|uz_UZ|ve_ZA|vi_VN|wa_BE|wal_ET|wo_SN|xh_ZA|yi_US|yo_NG|zh_CN|zh_HK|zh_SG|zh_TW|zu_ZA)"
++#REGEX="(aa_DJ|aa_ER|aa_ET|af_ZA|am_ET|an_ES|ar_AE|ar_BH|ar_DZ|ar_EG|ar_IN|ar_IQ|ar_JO|ar_KW|ar_LB|ar_LY|ar_MA|ar_OM|ar_QA|ar_SA|ar_SD|ar_SY|ar_TN|ar_YE|as_IN|ast_ES|az_AZ|be_BY|ber_DZ|ber_MA|bg_BG|bn_BD|bn_IN|bo_CN|bo_IN|br_FR|bs_BA|byn_ER|ca_AD|ca_ES|ca_FR|ca_IT|crh_UA|csb_PL|cs_CZ|cv_RU|cy_GB|da_DK|de_AT|de_BE|de_CH|de_DE|de_LU|dv_MV|dz_BT|el_CY|el_GR|en_AG|en_AU|en_BW|en_CA|en_DK|en_GB|en_HK|en_IE|en_IN|en_NG|en_NZ|en_PH|en_SG|en_US|en_ZA|en_ZW|es_AR|es_BO|es_CL|es_CO|es_CR|es_DO|es_EC|es_ES|es_GT|es_HN|es_MX|es_NI|es_PA|es_PE|es_PR|es_PY|es_SV|es_US|es_UY|es_VE|et_EE|eu_ES|fa_IR|fi_FI|fil_PH|fo_FO|fr_BE|fr_CA|fr_CH|fr_FR|fr_LU|fur_IT|fy_DE|fy_NL|ga_IE|gd_GB|gez_ER|gez_ET|gl_ES|gu_IN|gv_GB|ha_NG|he_IL|hi_IN|hne_IN|hr_HR|hsb_DE|ht_HT|hu_HU|hy_AM|i18n|id_ID|ig_NG|ik_CA|is_IS|it_CH|it_IT|iu_CA|iw_IL|ja_JP|ka_GE|kk_KZ|kl_GL|km_KH|kn_IN|kok_IN|ko_KR|ks_IN|ku_TR|kw_GB|ky_KG|lg_UG|li_BE|li_NL|lo_LA|lt_LT|lv_LV|mai_IN|mg_MG|mi_NZ|mk_MK|ml_IN|mn_MN|mr_IN|ms_MY|mt_MT|my_MM|nb_NO|nds_DE|nds_NL|ne_NP|nl_AW|nl_BE|nl_NL|nn_NO|nr_ZA|nso_ZA|oc_FR|om_ET|om_KE|or_IN|pa_IN|pap_AN|pa_PK|pl_PL|POSIX|ps_AF|pt_BR|pt_PT|ro_RO|ru_RU|ru_UA|rw_RW|sa_IN|sc_IT|sd_IN|se_NO|shs_CA|sid_ET|si_LK|sk_SK|sl_SI|so_DJ|so_ET|so_KE|so_SO|sq_AL|sq_MK|sr_ME|sr_RS|ss_ZA|st_ZA|sv_FI|sv_SE|ta_IN|te_IN|tg_TJ|th_TH|ti_ER|ti_ET|tig_ER|tk_TM|tl_PH|tn_ZA|tr_CY|tr_TR|ts_ZA|tt_RU|ug_CN|uk_UA|ur_IN|ur_PK|uz_UZ|ve_ZA|vi_VN|wa_BE|wal_ET|wo_SN|xh_ZA|yi_US|yo_NG|zh_CN|zh_HK|zh_SG|zh_TW|zu_ZA|tu_IN|bh_IN|raj_IN|ce_RU)"
++REGEX="(ckb_IQ|ckb_IR|aa_DJ|aa_ER|aa_ET|af_ZA|am_ET|an_ES|ar_AE|ar_BH|ar_DZ|ar_EG|ar_IN|ar_IQ|ar_JO|ar_KW|ar_LB|ar_LY|ar_MA|ar_OM|ar_QA|ar_SA|ar_SD|ar_SY|ar_TN|ar_YE|as_IN|ast_ES|az_AZ|be_BY|ber_DZ|ber_MA|bg_BG|bn_BD|bn_IN|bo_CN|bo_IN|br_FR|bs_BA|byn_ER|ca_AD|ca_ES|ca_FR|ca_IT|crh_UA|csb_PL|cs_CZ|cv_RU|cy_GB|da_DK|de_AT|de_BE|de_CH|de_DE|de_LU|dv_MV|dz_BT|el_CY|el_GR|en_AG|en_AU|en_BW|en_CA|en_DK|en_GB|en_HK|en_IE|en_IN|en_NG|en_NZ|en_PH|en_SG|en_US|en_ZA|en_ZW|es_AR|es_BO|es_CL|es_CO|es_CR|es_DO|es_EC|es_ES|es_GT|es_HN|es_MX|es_NI|es_PA|es_PE|es_PR|es_PY|es_SV|es_US|es_UY|es_VE|et_EE|eu_ES|fa_IR|fi_FI|fil_PH|fo_FO|fr_BE|fr_CA|fr_CH|fr_FR|fr_LU|fur_IT|fy_DE|fy_NL|ga_IE|gd_GB|gez_ER|gez_ET|gl_ES|gu_IN|gv_GB|ha_NG|he_IL|hi_IN|hne_IN|hr_HR|hsb_DE|ht_HT|hu_HU|hy_AM|i18n|id_ID|ig_NG|ik_CA|is_IS|it_CH|it_IT|iu_CA|iw_IL|ja_JP|ka_GE|kk_KZ|kl_GL|km_KH|kn_IN|kok_IN|ko_KR|ks_IN|ku_TR|kw_GB|ky_KG|lg_UG|li_BE|li_NL|lo_LA|lt_LT|lv_LV|mai_IN|mg_MG|mi_NZ|mk_MK|ml_IN|mn_MN|mr_IN|ms_MY|mt_MT|my_MM|nb_NO|nds_DE|nds_NL|ne_NP|nl_AW|nl_BE|nl_NL|nn_NO|nr_ZA|nso_ZA|oc_FR|om_ET|om_KE|or_IN|pa_IN|pap_AN|pa_PK|pl_PL|POSIX|ps_AF|pt_BR|pt_PT|ro_RO|ru_RU|ru_UA|rw_RW|sa_IN|sc_IT|sd_IN|se_NO|shs_CA|sid_ET|si_LK|sk_SK|sl_SI|so_DJ|so_ET|so_KE|so_SO|sq_AL|sq_MK|sr_ME|sr_RS|ss_ZA|st_ZA|sv_FI|sv_SE|ta_IN|te_IN|tg_TJ|th_TH|ti_ER|ti_ET|tig_ER|tk_TM|tl_PH|tn_ZA|tr_CY|tr_TR|ts_ZA|tt_RU|ug_CN|uk_UA|ur_IN|ur_PK|uz_UZ|ve_ZA|vi_VN|wa_BE|wal_ET|wo_SN|xh_ZA|yi_US|yo_NG|zh_CN|zh_HK|zh_SG|zh_TW|zu_ZA|raj_IN|ce_RU)"
+ REGEX=`echo $REGEX | sed "s#\<en\>#en_GB#" | sed "s#\<[a-z]\+\>#&_.*#g"`
+ 
+ for LOCALE in `grep -E "^\<$REGEX\>.*/$CHARSET" localedata/SUPPORTED | cut -d '/' -f 1`
+-- 
+1.9.1
+
